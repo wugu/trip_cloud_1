@@ -1,0 +1,16 @@
+server:
+  port: 8010
+spring:
+  cloud:
+    nacos:
+      server-addr: localhost:8848 #启动时候，将自己的服务信息注册到注册中心
+      discovery:
+        # 指定使用当前项目专属命名空间
+        namespace: ${spring.cloud.nacos.config.namespace} #引用bootstrap.yml中的namespace
+  application:
+    name: user-service
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3308/trip-user?serverTimezone=UTC&useUnicode=true&characterEncoding=utf-8&useSSL=true
+    username: root
+    password: 123456

@@ -1,0 +1,18 @@
+spring:
+  application:
+    name: user-service
+  cloud:
+    nacos:
+      server-addr: 127.0.0.1:8848 #nacos中心地址
+      config:
+        file-extension: yaml  # 配置文件格式
+        namespace: d4bc3b60-54d1-486f-a1ca-f7c7957b57fe
+  # 配置文件的环境
+  profiles:
+    # 使用哪种环境
+    active: dev  #环境标识
+
+# nacos config  远程找配置文件时的规则
+# 1.应用程序名称.后缀 =》 trip-gateway.yaml
+# 2.应用程序名称-环境.后缀=》trip-gateway-dev.yaml
+# 3.应用程序名称》trip-gateway
