@@ -7,6 +7,10 @@ spring:
       config:
         file-extension: yaml  # 配置文件格式
         namespace: d4bc3b60-54d1-486f-a1ca-f7c7957b57fe
+        #告诉配置中心需要从远程额外拉取哪些配置文件
+        shared-configs:
+          - dataId: redis-dev-yaml
+            #refresh: true
   # 配置文件的环境
   profiles:
     # 使用哪种环境

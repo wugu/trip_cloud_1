@@ -11,6 +11,7 @@ spring:
     name: user-service
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3308/trip-user?serverTimezone=UTC&useUnicode=true&characterEncoding=utf-8&useSSL=true
+    url: jdbc:mysql://localhost:3308/trip_user?serverTimezone=UTC&useUnicode=true&characterEncoding=utf-8&useSSL=true
+    #jdbc:mysql://localhost:3308/trip_user?characterEncoding=utf8&useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
     username: root
     password: 123456

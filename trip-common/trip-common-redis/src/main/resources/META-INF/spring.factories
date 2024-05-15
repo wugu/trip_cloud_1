@@ -1,0 +1,2 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+    com.pzhu.redis.config.Wolf2wRedisAutoConfiguration

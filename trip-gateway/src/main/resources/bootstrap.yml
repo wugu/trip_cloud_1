@@ -2,6 +2,22 @@ spring:
   application:
     name: trip-gateway
   cloud:
+#    gateway:
+#      # 配置网关跨域
+#      globalcors:
+#        cors-configurations:
+#          '[/**]':
+#            allowedOrigins: "*"
+#            allowedMethods:
+#              - GET
+#              - POST
+#              - PUT
+#              - PATCH
+#              - DELETE
+#              - OPTIONS
+#            allowedHeaders: "*"
+#            exposeHeaders: "*"
+#            allowCredentials: true
     nacos:
       server-addr: 127.0.0.1:8848 #nacos中心地址
       config:
