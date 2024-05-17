@@ -46,5 +46,7 @@
             <groupId>com.alibaba.cloud</groupId>
             <artifactId>spring-cloud-starter-alibaba-nacos-config</artifactId>
         </dependency>
+        <!-- 阿里云短信发送依赖 -->
+
     </dependencies>
 </project>

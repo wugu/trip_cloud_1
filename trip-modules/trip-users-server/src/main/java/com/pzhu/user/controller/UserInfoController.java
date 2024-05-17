@@ -3,8 +3,10 @@ package com.pzhu.user.controller;
 import com.pzhu.core.utils.R;
 import com.pzhu.user.domain.UserInfo;
 import com.pzhu.user.service.UserInfoService;
+import com.pzhu.user.vo.RegisterRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -32,6 +34,12 @@ public class UserInfoController {
     @GetMapping("/phone/exists")
     public R<Boolean> checkPhoneExists(String phone){//返回只需要存在或者不存在手机号，true/false
         return R.success(userInfoService.findByPhone(phone) != null);
+    }
+
+    @PostMapping("/register")
+    public R<?> register(RegisterRequest req){//泛型问号表示返回数据无所谓
+        userInfoService.register(req);
+        return R.success();
     }
 
 }

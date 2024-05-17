@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
 @Service
 @Slf4j
@@ -26,8 +27,8 @@ public class SmsServiceImpl implements SmsService {
 
         // 生成验证码（纯数字， 字母+数字
         String code = this.generateVerifyCode("LETTER", 4);
-        // 将验证码保存起来
-        redisCache.setCacheObject("USERS:REGISTER:VERIFY_CODE" + phone, code);
+        // 将验证码保存起来，半小时内有效
+        redisCache.setCacheObject("USERS:REGISTER:VERIFY_CODE" + phone, code, 30L,TimeUnit.MINUTES);
         // 调用第三方接口
 
     }
