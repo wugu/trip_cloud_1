@@ -2,6 +2,7 @@ package com.pzhu.user.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.pzhu.user.domain.UserInfo;
+import com.pzhu.user.vo.RegisterRequest;
 
 public interface UserInfoService extends IService<UserInfo> {
 
@@ -11,4 +12,10 @@ public interface UserInfoService extends IService<UserInfo> {
      * @return 用户对象
      */
     UserInfo findByPhone(String phone);
+
+    /**
+     * 注册接口
+     * @param req
+     */
+    void register(RegisterRequest req);
 }
