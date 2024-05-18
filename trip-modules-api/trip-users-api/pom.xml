@@ -23,6 +23,12 @@
             阻止依赖的传递性,防止其他微服务调用这个服务时，不需要这个依赖-->
             <scope>provided</scope>
         </dependency>
+        <!--redis依赖-->
+        <dependency>
+            <groupId>com.pzhu</groupId>
+            <artifactId>trip-common-redis</artifactId>
+            <version>1.0.0</version>
+        </dependency>
     </dependencies>
 
 </project>

@@ -1,6 +1,7 @@
 package com.pzhu.user.service.impl;
 
 import com.pzhu.redis.utils.RedisCache;
+import com.pzhu.user.redis.key.UserRedisKeyPrefix;
 import com.pzhu.user.service.SmsService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -26,9 +27,10 @@ public class SmsServiceImpl implements SmsService {
         //TODO 验证手机合法性
 
         // 生成验证码（纯数字， 字母+数字
-        String code = this.generateVerifyCode("LETTER", 4);
+        String code = this.generateVerifyCode("LETTER", 6);
         // 将验证码保存起来，半小时内有效
-        redisCache.setCacheObject("USERS:REGISTER:VERIFY_CODE" + phone, code, 30L,TimeUnit.MINUTES);
+        UserRedisKeyPrefix keyPrefix = UserRedisKeyPrefix.USER_REGISTER_VERIFY_CODE_STRING;
+        redisCache.setCacheObject(keyPrefix.fullKey(phone), code, keyPrefix.getTimeout(),keyPrefix.getUnit());
         // 调用第三方接口
 
     }
