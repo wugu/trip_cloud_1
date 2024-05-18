@@ -40,12 +40,15 @@ public class UserServiceImpl extends ServiceImpl<UserInfoMapper, UserInfo> imple
             throw new BusinessException(R.CODE_REGISTER_ERROR,"手机号已经存在，请登录");
         }
         //从redis中取得验证码，与前端传来的验证码进行校验
-        String fullKey = redisCache.getCacheObject(UserRedisKeyPrefix.USER_REGISTER_VERIFY_CODE_STRING.fullKey(req.getPhone()));
+
+        UserRedisKeyPrefix keyPrefix = UserRedisKeyPrefix.USER_REGISTER_VERIFY_CODE_STRING;
+
+        String fullKey = redisCache.getCacheObject(keyPrefix.fullKey(req.getPhone()));
         if (!req.getVerifyCode().equalsIgnoreCase(fullKey)){
             throw new BusinessException(R.CODE_REGISTER_ERROR,"验证码错误");
         }
         //将验证码从redis中删除
-        redisCache.deleteObject("USERS:REGISTER:VERIFY_CODE" + req.getPhone());
+        redisCache.deleteObject(keyPrefix.fullKey(req.getPhone()));
         //创建用户对象
         userInfo = this.buildUserInfo(req);
         //对密码进行加密
