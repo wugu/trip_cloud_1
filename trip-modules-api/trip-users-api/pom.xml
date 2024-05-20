@@ -29,6 +29,12 @@
             <artifactId>trip-common-redis</artifactId>
             <version>1.0.0</version>
         </dependency>
+        <!--Token的生成与解析-->
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt</artifactId>
+            <version>0.9.1</version>
+        </dependency>
     </dependencies>
 
 </project>

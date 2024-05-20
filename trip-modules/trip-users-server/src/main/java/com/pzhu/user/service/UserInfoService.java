@@ -4,6 +4,8 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.pzhu.user.domain.UserInfo;
 import com.pzhu.user.vo.RegisterRequest;
 
+import java.util.Map;
+
 public interface UserInfoService extends IService<UserInfo> {
 
     /**
@@ -18,4 +20,12 @@ public interface UserInfoService extends IService<UserInfo> {
      * @param req
      */
     void register(RegisterRequest req);
+
+    /**
+     * 登录接口
+     * @param username 用户名
+     * @param password 密码
+     * @return {Token, 用户}
+     */
+    Map<String, Object> login(String username, String password);
 }

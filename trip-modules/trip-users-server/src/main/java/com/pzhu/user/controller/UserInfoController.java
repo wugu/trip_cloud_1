@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/users")
@@ -36,10 +37,18 @@ public class UserInfoController {
         return R.success(userInfoService.findByPhone(phone) != null);
     }
 
+    @PostMapping("/login")
+    public R<Map<String, Object>> login(String username, String password){//给前端返回一个map，里面有Token和用户
+        Map<String, Object> map = userInfoService.login(username, password);
+        return R.success(map);
+    }
+
     @PostMapping("/register")
     public R<?> register(RegisterRequest req){//泛型问号表示返回数据无所谓
         userInfoService.register(req);
         return R.success();
     }
+
+
 
 }

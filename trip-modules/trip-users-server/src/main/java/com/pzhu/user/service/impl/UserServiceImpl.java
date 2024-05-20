@@ -11,8 +11,13 @@ import com.pzhu.user.redis.key.UserRedisKeyPrefix;
 import com.pzhu.user.service.UserInfoService;
 import com.pzhu.user.domain.UserInfo;
 import com.pzhu.user.vo.RegisterRequest;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
+
+import java.util.HashMap;
+import java.util.Map;
 
 
 @Service
@@ -57,6 +62,37 @@ public class UserServiceImpl extends ServiceImpl<UserInfoMapper, UserInfo> imple
         userInfo.setPassword(encryptPassword);
         //保存到数据库中   mybatisPlus
         super.save(userInfo);
+    }
+
+    @Override
+    public Map<String, Object> login(String username, String password) {
+        //基于用户名查询用户对象，为空直接抛出异常
+        UserInfo userInfo = this.findByPhone(username);
+        if (userInfo == null){
+            throw new BusinessException(500401, "用户名或密码错误");
+        }
+        //对前端传入的密码进行加密
+        String encryptPassword = Md5Utils.getMD5(password + username);
+        //校验前端密码和数据库密码是否一致，不一致直接抛出异常
+        if (!encryptPassword.equalsIgnoreCase(userInfo.getPassword())){
+            throw new BusinessException(500401, "用户名或密码错误");
+        }
+        //使用jwt生成Token，往jwt中存入用户基础信息
+        Map<String, Object> payload = new HashMap<>();
+        payload.put("id", userInfo.getId());
+        payload.put("nickname", userInfo.getNickname());
+        payload.put("loginTime",System.currentTimeMillis());
+        payload.put("expireTime",30);
+
+        String jwtToken = Jwts.builder()
+                .addClaims(payload)
+                .signWith(SignatureAlgorithm.HS256, "秘钥")
+                .compact();
+        //构建map对象，存入token以及用户对象，返回给前端
+        payload.clear();
+        payload.put("token", jwtToken);
+        payload.put("user", userInfo);
+        return payload;
     }
 
     /**
