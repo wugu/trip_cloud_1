@@ -9,6 +9,9 @@ public class UserRedisKeyPrefix extends BaseKeyPrefix {
     public static final UserRedisKeyPrefix USER_REGISTER_VERIFY_CODE_STRING =
             new UserRedisKeyPrefix("USER:REGISTER_VERIFY_CODE_STRING",30,TimeUnit.MINUTES);
 
+    public static final UserRedisKeyPrefix USER_LOGIN_INFO_STRING =
+            new UserRedisKeyPrefix("USER:LOGIN:INFO");
+
     public UserRedisKeyPrefix(String prefix) {
         super(prefix);
     }

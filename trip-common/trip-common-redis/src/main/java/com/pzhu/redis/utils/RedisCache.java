@@ -1,6 +1,6 @@
 package com.pzhu.redis.utils;
 
-//import cn.wolfcode.wolf2w.redis.key.KeyPrefix;
+import com.pzhu.redis.key.KeyPrefix;
 import org.springframework.data.redis.core.BoundSetOperations;
 import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -38,13 +38,13 @@ public class RedisCache {
         redisTemplate.opsForValue().set(key, value);
     }
 
-    /*public <T> void setCacheObject(final KeyPrefix prefix, final T value, String... suffix) {
+    public <T> void setCacheObject(final KeyPrefix prefix, final T value, String... suffix) {
         if (prefix.getTimeout() > 0) {
             this.setCacheObject(prefix.fullKey(suffix), value, prefix.getTimeout(), prefix.getUnit());
         } else {
             this.setCacheObject(prefix.fullKey(suffix), value);
         }
-    }*/
+    }
 
     /**
      * 缓存基本的对象，Integer、String、实体类等
@@ -264,7 +264,7 @@ public class RedisCache {
      * @param increment 自增值
      * @param suffix    后缀
      */
-    /*public Long hashIncrement(KeyPrefix prefix, String hashKey, int increment, String... suffix) {
+    public Long hashIncrement(KeyPrefix prefix, String hashKey, int increment, String... suffix) {
         Long ret = redisTemplate.opsForHash().increment(prefix.fullKey(suffix), hashKey, increment);
         if (prefix.getTimeout() != null && prefix.getTimeout() > 0 && ret == 1) {
             // 只有有设置过期时间 && 每一个用户第一次访问页面时才会+1
@@ -272,7 +272,7 @@ public class RedisCache {
         }
 
         return ret;
-    }*/
+    }
 
     /**
      * 针对 zset 成员进行增加分数
@@ -282,9 +282,9 @@ public class RedisCache {
      * @param member    成员
      * @param suffix    后缀
      */
-    /*public void zsetIncrement(KeyPrefix keyPrefix, double increment, Object member, String... suffix) {
+    public void zsetIncrement(KeyPrefix keyPrefix, double increment, Object member, String... suffix) {
         redisTemplate.opsForZSet().incrementScore(keyPrefix.fullKey(suffix), member, increment);
-    }*/
+    }
 
     /**
      * 按照指定分数范围获取 zset 集合中的元素
@@ -294,9 +294,9 @@ public class RedisCache {
      * @param end       结束分数
      * @return 分数范围内的 member 集合
      */
-    /*public <T> Set<T> zsetRevrange(KeyPrefix keyPrefix, int start, int end, String... suffix) {
+    public <T> Set<T> zsetRevrange(KeyPrefix keyPrefix, int start, int end, String... suffix) {
         return redisTemplate.opsForZSet().reverseRange(keyPrefix.fullKey(suffix), start, end);
-    }*/
+    }
 
     /**
      * 按照分数范围删除范围内的所有元素
@@ -306,9 +306,9 @@ public class RedisCache {
      * @param max       最大分数
      * @param suffix    后缀
      */
-    /*public void zsetRemoveRange(KeyPrefix keyPrefix, int min, int max, String... suffix) {
+    public void zsetRemoveRange(KeyPrefix keyPrefix, int min, int max, String... suffix) {
         redisTemplate.opsForZSet().removeRange(keyPrefix.fullKey(suffix), min, max);
-    }*/
+    }
 
     public Boolean setnx(String key, String value) {
         return redisTemplate.opsForValue().setIfAbsent(key, value);

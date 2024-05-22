@@ -10,6 +10,7 @@ import com.pzhu.user.mapper.UserInfoMapper;
 import com.pzhu.user.redis.key.UserRedisKeyPrefix;
 import com.pzhu.user.service.UserInfoService;
 import com.pzhu.user.domain.UserInfo;
+import com.pzhu.user.vo.LoginUser;
 import com.pzhu.user.vo.RegisterRequest;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -18,6 +19,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
 
 @Service
@@ -77,12 +80,28 @@ public class UserServiceImpl extends ServiceImpl<UserInfoMapper, UserInfo> imple
         if (!encryptPassword.equalsIgnoreCase(userInfo.getPassword())){
             throw new BusinessException(500401, "用户名或密码错误");
         }
+
+        LoginUser loginUser = new LoginUser();
+        BeanUtils.copyProperties(userInfo, loginUser);
+
+
+        // 当前时间
+        long now = System.currentTimeMillis();
+        loginUser.setLoginTime(now);
+        //过期时间
+        Long expireTime = now + (30 * 60 * 1000);
+        loginUser.setExpireTime(expireTime);
+
+        //生成一个用户uuid 是用户存入redis的唯一标识
+        String uuid = UUID.randomUUID().toString().replaceAll("-", "");
+        UserRedisKeyPrefix loginInfoString = UserRedisKeyPrefix.USER_LOGIN_INFO_STRING;//获取前缀
+        loginInfoString.setTimeout(Math.toIntExact(expireTime));
+        loginInfoString.setUnit(TimeUnit.MILLISECONDS);
+        redisCache.setCacheObject(loginInfoString, loginUser, uuid);
+
         //使用jwt生成Token，往jwt中存入用户基础信息
         Map<String, Object> payload = new HashMap<>();
-        payload.put("id", userInfo.getId());
-        payload.put("nickname", userInfo.getNickname());
-        payload.put("loginTime",System.currentTimeMillis());
-        payload.put("expireTime",30);
+        payload.put("uuid", uuid);
 
         String jwtToken = Jwts.builder()
                 .addClaims(payload)
@@ -91,7 +110,7 @@ public class UserServiceImpl extends ServiceImpl<UserInfoMapper, UserInfo> imple
         //构建map对象，存入token以及用户对象，返回给前端
         payload.clear();
         payload.put("token", jwtToken);
-        payload.put("user", userInfo);
+        payload.put("user", loginUser);
         return payload;
     }
 
