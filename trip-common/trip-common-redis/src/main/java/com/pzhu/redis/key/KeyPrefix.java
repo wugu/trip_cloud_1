@@ -18,7 +18,7 @@ public interface KeyPrefix {//redis中key的前缀
      * @return
      */
     default Long getTimeout(){//默认方法
-        return Long.valueOf(-1);
+        return -1L;
     }
 
     /**
@@ -29,6 +29,11 @@ public interface KeyPrefix {//redis中key的前缀
         return null;
     }
 
+    /**
+     * 将可变参数 suffix 与前缀字符串按冒号分隔拼接起来
+     * @param suffix 可变参数
+     * @return
+     */
     default String fullKey(String... suffix){
         StringBuilder sb = new StringBuilder(100);
         sb.append(getPrefix());

@@ -8,6 +8,11 @@ import lombok.Setter;
 @Setter
 public class LoginUser {
 
+    public static final String TOKEN_HEADER = "token";
+    public static final String LOGIN_USER_REDIS_UUID = "uuid";
+    public static final long MINUTES_MILLISECONDS = 60 * 1000;
+    public static final long TWENTY_MILLISECONDS = 20 * MINUTES_MILLISECONDS;
+
 
     private Long id;
 

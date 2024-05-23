@@ -6,6 +6,7 @@ import com.pzhu.core.exception.BusinessException;
 import com.pzhu.core.utils.Md5Utils;
 import com.pzhu.core.utils.R;
 import com.pzhu.redis.utils.RedisCache;
+import com.pzhu.user.config.JwtProperties;
 import com.pzhu.user.mapper.UserInfoMapper;
 import com.pzhu.user.redis.key.UserRedisKeyPrefix;
 import com.pzhu.user.service.UserInfoService;
@@ -15,6 +16,7 @@ import com.pzhu.user.vo.RegisterRequest;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
@@ -31,6 +33,9 @@ public class UserServiceImpl extends ServiceImpl<UserInfoMapper, UserInfo> imple
     public UserServiceImpl(RedisCache redisCache) {
         this.redisCache = redisCache;
     }
+
+    @Autowired
+    private JwtProperties jwtProperties;
 
     @Override
     public UserInfo findByPhone(String phone) {
@@ -89,7 +94,7 @@ public class UserServiceImpl extends ServiceImpl<UserInfoMapper, UserInfo> imple
         long now = System.currentTimeMillis();
         loginUser.setLoginTime(now);
         //过期时间
-        Long expireTime = now + (30 * 60 * 1000);
+        Long expireTime = now + (jwtProperties.getExpireTime() * LoginUser.MINUTES_MILLISECONDS);
         loginUser.setExpireTime(expireTime);
 
         //生成一个用户uuid 是用户存入redis的唯一标识
@@ -101,11 +106,11 @@ public class UserServiceImpl extends ServiceImpl<UserInfoMapper, UserInfo> imple
 
         //使用jwt生成Token，往jwt中存入用户基础信息
         Map<String, Object> payload = new HashMap<>();
-        payload.put("uuid", uuid);
+        payload.put(LoginUser.LOGIN_USER_REDIS_UUID, uuid);
 
         String jwtToken = Jwts.builder()
                 .addClaims(payload)
-                .signWith(SignatureAlgorithm.HS256, "秘钥")
+                .signWith(SignatureAlgorithm.HS256, jwtProperties.getSecret())
                 .compact();
         //构建map对象，存入token以及用户对象，返回给前端
         payload.clear();
