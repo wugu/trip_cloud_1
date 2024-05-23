@@ -1,16 +1,15 @@
-package com.pzhu.user.interceptor;
+package com.pzhu.auth.inceptor;
 
+import com.pzhu.auth.anno.RequireLogin;
+import com.pzhu.auth.config.JwtProperties;
 import com.pzhu.core.exception.BusinessException;
 import com.pzhu.redis.utils.RedisCache;
-import com.pzhu.user.anno.RequireLogin;
-import com.pzhu.user.config.JwtProperties;
 import com.pzhu.user.redis.key.UserRedisKeyPrefix;
 import com.pzhu.user.vo.LoginUser;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
 
@@ -18,16 +17,17 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.concurrent.TimeUnit;
 
-@Component
+@Slf4j
 public class LoginInterceptor implements HandlerInterceptor {
     private final RedisCache redisCache;
+    private final JwtProperties jwtProperties;
 
-    public LoginInterceptor(RedisCache redisCache) {
+    public LoginInterceptor(RedisCache redisCache, JwtProperties jwtProperties) {
         this.redisCache = redisCache;
+        this.jwtProperties = jwtProperties;
     }
 
-    @Autowired
-    private JwtProperties jwtProperties;
+
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {

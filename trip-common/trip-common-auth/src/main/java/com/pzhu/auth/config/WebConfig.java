@@ -1,14 +1,16 @@
-package com.pzhu.user.config;
+package com.pzhu.auth.config;
 
 
-import com.pzhu.user.interceptor.LoginInterceptor;
+import com.pzhu.auth.inceptor.LoginInterceptor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+@ConditionalOnMissingBean(WebMvcConfigurer.class)
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
-
 
     private final LoginInterceptor loginInterceptor;
 

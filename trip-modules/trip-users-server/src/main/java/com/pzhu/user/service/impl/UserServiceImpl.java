@@ -2,11 +2,11 @@ package com.pzhu.user.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.pzhu.auth.config.JwtProperties;
 import com.pzhu.core.exception.BusinessException;
 import com.pzhu.core.utils.Md5Utils;
 import com.pzhu.core.utils.R;
 import com.pzhu.redis.utils.RedisCache;
-import com.pzhu.user.config.JwtProperties;
 import com.pzhu.user.mapper.UserInfoMapper;
 import com.pzhu.user.redis.key.UserRedisKeyPrefix;
 import com.pzhu.user.service.UserInfoService;

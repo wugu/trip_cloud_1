@@ -1,4 +1,4 @@
-package com.pzhu.user.anno;
+package com.pzhu.auth.anno;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

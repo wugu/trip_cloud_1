@@ -26,7 +26,7 @@ public class UserInfo implements Serializable {
     private String phone; //手机
     private String email; //邮箱
 
-
+    //@JsonIgnore
     private String password; //密码
     private Integer gender = GENDER_SECRET; //性别
     private Integer level = 0; //用户等级

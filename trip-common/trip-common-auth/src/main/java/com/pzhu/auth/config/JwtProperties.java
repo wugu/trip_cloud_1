@@ -1,4 +1,4 @@
-package com.pzhu.user.config;
+package com.pzhu.auth.config;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -8,7 +8,6 @@ import org.springframework.context.annotation.Configuration;
 @Getter
 @Setter
 @ConfigurationProperties(prefix = "jwt")
-@Configuration
 public class JwtProperties {
 
     private Integer expireTime;//过期时间
