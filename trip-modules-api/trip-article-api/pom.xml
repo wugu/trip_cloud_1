@@ -9,22 +9,23 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>trip-users-api</artifactId>
+    <artifactId>trip-article-api</artifactId>
 
     <dependencies>
+
         <dependency>
             <groupId>com.baomidou</groupId>
             <artifactId>mybatis-plus-boot-starter</artifactId>
             <!--表示这个依赖只在编译时和测试时生效，运行时期不生效，
             阻止依赖的传递性,防止其他微服务调用这个服务时，不需要这个依赖-->
-            <scope>provided</scope>
+            <!--<scope>provided</scope>-->
         </dependency>
         <!--redis依赖-->
-        <dependency>
+        <!--<dependency>
             <groupId>com.pzhu</groupId>
             <artifactId>trip-common-redis</artifactId>
             <version>1.0.0</version>
-        </dependency>
+        </dependency>-->
 
     </dependencies>
 
