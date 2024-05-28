@@ -18,13 +18,13 @@
         <module>trip-article-server</module>
     </modules>
 
-    <dependencies>
-        <!--nacos注册中心-->
+    <!--<dependencies>
+        &lt;!&ndash;nacos注册中心&ndash;&gt;
         <dependency>
             <groupId>com.alibaba.cloud</groupId>
             <artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
         </dependency>
-        <!--nacos配置中心客户端-->
+        &lt;!&ndash;nacos配置中心客户端&ndash;&gt;
         <dependency>
             <groupId>com.alibaba.cloud</groupId>
             <artifactId>spring-cloud-starter-alibaba-nacos-config</artifactId>
@@ -33,6 +33,6 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
-    </dependencies>
+    </dependencies>-->
 
 </project>
