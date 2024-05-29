@@ -34,4 +34,5 @@ public class Destination implements Serializable {
 
     @TableField(exist = false)  //  表示不在数据表中存在
     private List<Destination> children = new ArrayList<>();
+
 }

@@ -4,9 +4,13 @@ package com.pzhu.article.controller;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.pzhu.Destination;
 import com.pzhu.Region;
+import com.pzhu.article.service.DestinationService;
 import com.pzhu.article.service.RegionService;
 import com.pzhu.core.utils.R;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/regions")
@@ -14,9 +18,9 @@ public class RegionController {
 
 
     private final RegionService regionService;
-    private final Destination destinationService;
+    private final DestinationService destinationService;
 
-    public RegionController(RegionService regionService, Destination destinationService) {
+    public RegionController(RegionService regionService,DestinationService destinationService) {
         this.regionService = regionService;
         this.destinationService = destinationService;
     }
@@ -44,5 +48,16 @@ public class RegionController {
     @PostMapping("/delete/{id}")
     public R<?> deleteById(@PathVariable Long id){
         return R.success(regionService.removeById(id));
+    }
+
+    /**
+     * 根据区域id查询吗目的地
+     * @param id
+     * @return
+     */
+    @PostMapping("/{id}/destination")
+    public R<List<Destination>> getDestinationByRegionId(@PathVariable Long id){
+        List<Destination> destinations = destinationService.getDestinationByRegionId(id);
+        return R.success(destinations);
     }
 }
