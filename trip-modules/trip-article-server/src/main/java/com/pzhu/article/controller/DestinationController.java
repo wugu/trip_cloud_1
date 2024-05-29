@@ -2,10 +2,10 @@ package com.pzhu.article.controller;
 
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.pzhu.Destination;
-import com.pzhu.Region;
+import com.pzhu.domain.Destination;
 import com.pzhu.article.service.DestinationService;
 import com.pzhu.core.utils.R;
+import com.pzhu.qo.DestinationQuery;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,9 +21,14 @@ public class DestinationController {
         this.destinationService = destinationService;
     }
 
+    /**
+     * 分层分页，默认目的地没有上一级，点击可查看下一级目的地
+     * @param query
+     * @return
+     */
     @GetMapping
-    public R<Page<Destination>> pageList(Page<Destination> page){
-        return R.success(destinationService.page(page));
+    public R<Page<Destination>> pageList(DestinationQuery query){
+        return R.success(destinationService.pageList(query));
     }
 
     @GetMapping("/list")

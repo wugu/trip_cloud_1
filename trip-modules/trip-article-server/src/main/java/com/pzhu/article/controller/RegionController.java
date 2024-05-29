@@ -2,12 +2,11 @@ package com.pzhu.article.controller;
 
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.pzhu.Destination;
-import com.pzhu.Region;
+import com.pzhu.domain.Destination;
+import com.pzhu.domain.Region;
 import com.pzhu.article.service.DestinationService;
 import com.pzhu.article.service.RegionService;
 import com.pzhu.core.utils.R;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;

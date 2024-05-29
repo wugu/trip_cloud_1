@@ -1,4 +1,4 @@
-package com.pzhu;
+package com.pzhu.domain;
 
 
 import com.baomidou.mybatisplus.annotation.IdType;
