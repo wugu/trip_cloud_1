@@ -55,4 +55,14 @@ public class DestinationController {
     public R<?> deleteById(@PathVariable Long id){
         return R.success(destinationService.removeById(id));
     }
+
+    /**
+     * 目的地吐司查询
+     * @param destId 中国(最上级) id
+     * @return
+     */
+    @GetMapping("/toasts")
+    public R<List<Destination>> toasts(Long destId){
+        return R.success(destinationService.findToasts(destId));
+    }
 }

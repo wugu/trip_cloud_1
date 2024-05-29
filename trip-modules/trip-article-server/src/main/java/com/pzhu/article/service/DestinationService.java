@@ -12,4 +12,6 @@ public interface DestinationService extends IService<Destination> {
     List<Destination> getDestinationByRegionId(Long id);
 
     Page<Destination> pageList(DestinationQuery query);
+
+    List<Destination> findToasts(Long destId);
 }

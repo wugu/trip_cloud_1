@@ -11,8 +11,8 @@ import com.pzhu.article.service.RegionService;
 import com.pzhu.qo.DestinationQuery;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
-import sun.security.krb5.internal.crypto.Des;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -59,5 +59,25 @@ public class DestinationServiceImpl extends ServiceImpl<DestinationMapper, Desti
         return super.page(
                 new Page<>(query.getCurrent(), query.getSize()), wrapper
         );
+    }
+
+    /**
+     * 目的地吐司查询
+     * @param destId
+     * @return
+     */
+    public List<Destination> findToasts(Long destId) {
+
+        List<Destination> destinations = new ArrayList<>();
+        while (destId != null){
+            Destination dest = super.getById(destId);
+            if (dest == null){
+                break;
+            }
+            destinations.add(dest);
+            destId = dest.getParentId();
+        }
+        Collections.reverse(destinations);// 将 list 集合翻转
+        return destinations;
     }
 }
