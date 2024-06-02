@@ -67,5 +67,13 @@ public class DestinationController {
         return R.success(destinationService.findToasts(destId));
     }
 
-
+    /**
+     * 热门目的地查询
+     * @param rid
+     * @return
+     */
+    @GetMapping("/hotList")
+    public R<List<Destination>> hotList(Long rid){
+        return R.success(destinationService.findDestsByRid(rid));
+    }
 }

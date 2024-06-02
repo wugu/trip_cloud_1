@@ -17,5 +17,6 @@ public interface DestinationService extends IService<Destination> {
     List<Destination> findToasts(Long destId);
 
 
+    List<Destination> findDestsByRid(Long rid);
 
 }

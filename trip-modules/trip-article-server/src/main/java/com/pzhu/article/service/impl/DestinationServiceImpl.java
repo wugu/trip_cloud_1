@@ -80,4 +80,35 @@ public class DestinationServiceImpl extends ServiceImpl<DestinationMapper, Desti
         Collections.reverse(destinations);// 将 list 集合翻转
         return destinations;
     }
+
+    /**
+     * 查询热门目的地
+     * @param rid
+     * @return
+     */
+    public List<Destination> findDestsByRid(Long rid) {
+        List<Destination> destinations = new ArrayList<>();
+        QueryWrapper<Destination> wrapper = new QueryWrapper<Destination>().eq("parent_id", 1);
+        // 查询国内的数据
+        if (rid < 0){
+            destinations = list(wrapper);
+        }else {
+            // 查询其他区域的数据
+            Region region = regionService.getById(rid);
+            if (region == null){
+                return Collections.emptyList();
+            }
+            destinations = super.listByIds(region.parseRefIds());
+        }
+
+        // 查询所有目的地的下一级目的地
+        for (Destination destination : destinations) {
+            // 清除之前的条件
+            wrapper.clear();
+            // 限制只查 10 条， lastSql 指在 sql 后面加上这一句
+            List<Destination> children = list(wrapper.eq("parent_id", destination.getId()).last("limit 10"));
+            destination.setChildren(children);
+        }
+        return destinations;
+    }
 }

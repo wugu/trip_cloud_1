@@ -17,7 +17,6 @@ public class RegionServiceImpl extends ServiceImpl<RegionMapper, Region> impleme
      * @return
      */
     public List<Region> findHotList() {
-
         // 查询所有热门区域，并且进行排序
         QueryWrapper queryWrapper = new QueryWrapper<Region>();
         queryWrapper.eq("ishot", Region.STATE_HOT);

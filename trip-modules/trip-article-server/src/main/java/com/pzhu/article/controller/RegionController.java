@@ -68,4 +68,6 @@ public class RegionController {
     public R<List<Region>> hotList(){
         return R.success(regionService.findHotList());
     }
+
+
 }

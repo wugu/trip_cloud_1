@@ -20,7 +20,7 @@ import java.util.List;
 @TableName("region")
 public class Region implements Serializable {
     public static final int STATE_HOT = 1;
-    public static final int STATE_NORMAL = 1;
+    public static final int STATE_NORMAL = -1;
 
     @TableId(type = IdType.AUTO)
     private Long id;
