@@ -2,8 +2,8 @@ package com.pzhu.article.controller;
 
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.pzhu.domain.Destination;
-import com.pzhu.domain.Region;
+import com.pzhu.article.domain.Destination;
+import com.pzhu.article.domain.Region;
 import com.pzhu.article.service.DestinationService;
 import com.pzhu.article.service.RegionService;
 import com.pzhu.core.utils.R;

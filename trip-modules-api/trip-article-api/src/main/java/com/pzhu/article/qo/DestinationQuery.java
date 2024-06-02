@@ -1,4 +1,4 @@
-package com.pzhu.qo;
+package com.pzhu.article.qo;
 
 import com.pzhu.core.qo.QueryObject;
 import lombok.Getter;

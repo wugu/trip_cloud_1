@@ -3,12 +3,12 @@ package com.pzhu.article.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.pzhu.domain.Destination;
-import com.pzhu.domain.Region;
+import com.pzhu.article.domain.Destination;
+import com.pzhu.article.domain.Region;
 import com.pzhu.article.mapper.DestinationMapper;
 import com.pzhu.article.service.DestinationService;
 import com.pzhu.article.service.RegionService;
-import com.pzhu.qo.DestinationQuery;
+import com.pzhu.article.qo.DestinationQuery;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -87,20 +87,28 @@ public class DestinationServiceImpl extends ServiceImpl<DestinationMapper, Desti
      * @return
      */
     public List<Destination> findDestsByRid(Long rid) {
-        List<Destination> destinations = new ArrayList<>();
-        QueryWrapper<Destination> wrapper = new QueryWrapper<Destination>().eq("parent_id", 1);
+        List<Destination> destinations;
         // 查询国内的数据
         if (rid < 0){
-            destinations = list(wrapper);
+            destinations = this.getBaseMapper().selectHotListByRid(rid, Collections.emptyList());
         }else {
             // 查询其他区域的数据
             Region region = regionService.getById(rid);
-            if (region == null){
+            if (region == null) {
                 return Collections.emptyList();
             }
-            destinations = super.listByIds(region.parseRefIds());
+             destinations = this.getBaseMapper().selectHotListByRid(rid, region.parseRefIds());
+        }
+        // 对每一个子目的地集合进行剪裁， 只保留10条数据
+        for (Destination destination : destinations) {
+            List<Destination> children = destination.getChildren();
+            if (children != null && children.size() > 10) {
+                destination.setChildren(children.subList(0, 10));
+            }
         }
 
+        return destinations;
+        /*
         // 查询所有目的地的下一级目的地
         for (Destination destination : destinations) {
             // 清除之前的条件
@@ -109,6 +117,6 @@ public class DestinationServiceImpl extends ServiceImpl<DestinationMapper, Desti
             List<Destination> children = list(wrapper.eq("parent_id", destination.getId()).last("limit 10"));
             destination.setChildren(children);
         }
-        return destinations;
+        return destinations;*/
     }
 }

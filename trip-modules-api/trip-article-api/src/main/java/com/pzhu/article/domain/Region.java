@@ -1,4 +1,4 @@
-package com.pzhu.domain;
+package com.pzhu.article.domain;
 
 
 import com.baomidou.mybatisplus.annotation.IdType;
@@ -20,7 +20,7 @@ import java.util.List;
 @TableName("region")
 public class Region implements Serializable {
     public static final int STATE_HOT = 1;
-    public static final int STATE_NORMAL = -1;
+    public static final int STATE_NORMAL = 0;
 
     @TableId(type = IdType.AUTO)
     private Long id;
