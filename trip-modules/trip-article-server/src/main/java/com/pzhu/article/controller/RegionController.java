@@ -50,7 +50,7 @@ public class RegionController {
     }
 
     /**
-     * 根据区域id查询吗目的地
+     * 根据区域id查询目的地
      * @param id
      * @return
      */
@@ -58,5 +58,14 @@ public class RegionController {
     public R<List<Destination>> getDestinationByRegionId(@PathVariable Long id){
         List<Destination> destinations = destinationService.getDestinationByRegionId(id);
         return R.success(destinations);
+    }
+
+    /**
+     * 热门区域查询
+     * @return
+     */
+    @GetMapping("/hotList")
+    public R<List<Region>> hotList(){
+        return R.success(regionService.findHotList());
     }
 }

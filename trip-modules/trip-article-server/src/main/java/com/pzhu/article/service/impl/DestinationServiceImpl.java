@@ -53,7 +53,7 @@ public class DestinationServiceImpl extends ServiceImpl<DestinationMapper, Desti
         // 如果 parentId 为 null 就查询所有 parentId is null 得数据
         wrapper.isNull(query.getParentId() == null, "parent_id");
         // 如果 parentId 不为 null ，就根据 parentId 进行查询
-        wrapper.eq(query.getParentId() != null, "parent_id", query.getParentId());
+        wrapper.eq(query.getParentId() != null, "parent_id", query.getParentId());// 传参
         // 关键字查询 关键字不为空进行模糊查询
         wrapper.like(!StringUtils.isEmpty(query.getKeyword()),"name", query.getKeyword());
         return super.page(

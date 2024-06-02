@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.pzhu.domain.Destination;
 import com.pzhu.article.service.DestinationService;
 import com.pzhu.core.utils.R;
+import com.pzhu.domain.Region;
 import com.pzhu.qo.DestinationQuery;
 import org.springframework.web.bind.annotation.*;
 
@@ -65,4 +66,6 @@ public class DestinationController {
     public R<List<Destination>> toasts(Long destId){
         return R.success(destinationService.findToasts(destId));
     }
+
+
 }
