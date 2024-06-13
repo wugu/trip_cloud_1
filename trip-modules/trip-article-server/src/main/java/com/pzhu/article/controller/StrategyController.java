@@ -28,7 +28,7 @@ public class StrategyController {
         return R.success(StrategyService.getById(id));
     }
 
-    @PostMapping("/save")
+    @PostMapping("/save")   
     public R<?> save(Strategy Strategy){
         return R.success(StrategyService.save(Strategy));
     }

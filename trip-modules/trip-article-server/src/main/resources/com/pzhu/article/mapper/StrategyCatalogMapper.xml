@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.pzhu.article.mapper.StrategyCatalogMapper">
+
+    <resultMap id="BaseResultMapper" type="com.pzhu.article.domain.StrategyCatalog">
+        <id column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="dest_id" property="destId"/>
+        <result column="dest_name" property="destName"/>
+        <result column="seq" property="seq"/>
+        <result column="state" property="state"/>
+    </resultMap>
+
+    <resultMap id="CatalogGroupMap" type="com.pzhu.article.vo.StrategyCatalogGroup">
+        <id property="destId" column="dest_id"/>
+        <result property="destName" column="dest_name"/>
+        <collection property="catalogList" columnPrefix="sc_" ofType="com.pzhu.article.domain.StrategyCatalog" resultMap="BaseResultMapper"/>
+    </resultMap>
+
+    <select id="selectGroupList" resultType="com.pzhu.article.vo.StrategyCatalogGroup">
+        select t.dest_id, t.dest_name, sc.id sc_id, sc.name sc_name, sc.seq sc_seq, sc.state sc_state
+            form (
+                select dest_id, dest_name
+                form strategy_catalog
+                group by dest_id, dest_name
+            ) t
+                join strategy_catalog sc on t.dest_id = sc.dest.id
+            where sc.state = 0
+    </select>
+</mapper>
