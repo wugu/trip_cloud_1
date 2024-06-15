@@ -7,6 +7,7 @@ import com.pzhu.article.domain.StrategyTheme;
 import com.pzhu.article.service.DestinationService;
 import com.pzhu.article.service.StrategyThemeService;
 import com.pzhu.core.utils.R;
+import io.swagger.annotations.Api;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -22,7 +23,7 @@ public class StrategyThemeController {
         this.StrategyThemeService = StrategyThemeService;
     }
 
-    @GetMapping("query")
+    @GetMapping("/query")
     public R<Page<StrategyTheme>> pageList(Page<StrategyTheme> page){
         return R.success(StrategyThemeService.page(page));
     }
@@ -47,5 +48,9 @@ public class StrategyThemeController {
         return R.success(StrategyThemeService.removeById(id));
     }
 
+    @GetMapping("/list")
+    public R<List<StrategyTheme>> listAll(){
+        return R.success(StrategyThemeService.list());
+    }
 
 }

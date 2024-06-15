@@ -19,6 +19,15 @@ spring:
 logging:
   level:
     com.pzhu.article.mapper: DEBUG
+aliyun:
+#  accessKey:
+#    id:
+#    secret:
+  oss:
+    bucket-name: test-oss-xy
+    endpoint: oss-cn-chengdu.aliyuncs.com
+    domain: test-oss-xy.oss-cn-chengdu.aliyuncs.com
+
 
 # nacos config  远程找配置文件时的规则
 # 1.应用程序名称.后缀 =》 trip-gateway.yaml

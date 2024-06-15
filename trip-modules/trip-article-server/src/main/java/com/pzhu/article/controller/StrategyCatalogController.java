@@ -26,6 +26,10 @@ public class StrategyCatalogController {
         return R.success(StrategyCatalogService.page(page));
     }
 
+    /**
+     * 攻略分组查询
+     * @return
+     */
     @GetMapping("/groups")
     public R<List<StrategyCatalogGroup>> groupList(){
         return R.success(StrategyCatalogService.findGroupList());

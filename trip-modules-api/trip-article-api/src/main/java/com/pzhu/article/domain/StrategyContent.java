@@ -6,6 +6,9 @@ import lombok.Setter;
 
 import java.io.Serializable;
 
+/**
+ * 攻略内容
+ */
 @Getter
 @Setter
 @TableName("strategy_content")
