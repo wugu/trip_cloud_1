@@ -26,7 +26,7 @@ aliyun:
   oss:
     bucket-name: test-oss-xy
     endpoint: oss-cn-chengdu.aliyuncs.com
-    domain: test-oss-xy.oss-cn-chengdu.aliyuncs.com
+    domain: https://test-oss-xy.oss-cn-chengdu.aliyuncs.com
 
 
 # nacos config  远程找配置文件时的规则
