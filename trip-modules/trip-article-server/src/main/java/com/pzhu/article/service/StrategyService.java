@@ -7,4 +7,5 @@ import com.pzhu.article.domain.StrategyCatalog;
 
 public interface StrategyService extends IService<Strategy> {
 
+
 }
