@@ -14,4 +14,6 @@ public interface StrategyService extends IService<Strategy> {
     List<StrategyCatalog> findGroupByDestId(Long destId);
 
     StrategyContent getContentById(Long id);
+
+    List<Strategy> findViewnumTop3ByDestId(Long destId);
 }

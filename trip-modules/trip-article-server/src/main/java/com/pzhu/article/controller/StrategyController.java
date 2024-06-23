@@ -96,4 +96,14 @@ public class StrategyController {
     public R<StrategyContent> getContentById(Long id){
         return R.success(strategyService.getContentById(id));
     }
+
+    /**
+     * 目的地攻略查询 Top 3
+     * @param destId
+     * @return
+     */
+    @GetMapping("/viewnumTop3")
+    public R<List<Strategy>> viewnumTop3(Long destId){
+        return R.success(strategyService.findViewnumTop3ByDestId(destId));
+    }
 }

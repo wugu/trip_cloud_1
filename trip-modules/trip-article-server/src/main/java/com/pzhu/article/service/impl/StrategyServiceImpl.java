@@ -1,5 +1,6 @@
 package com.pzhu.article.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.pzhu.article.domain.*;
 import com.pzhu.article.mapper.StrategyContentMapper;
@@ -88,6 +89,21 @@ public class StrategyServiceImpl extends ServiceImpl<StrategyMapper, Strategy> i
     @Override
     public StrategyContent getContentById(Long id) {
         return strategyContentMapper.selectById(id);
+    }
+
+    /**
+     * 目的地攻略 top 3查询
+     * @param destId
+     * @return
+     */
+    @Override
+    public List<Strategy> findViewnumTop3ByDestId(Long destId) {
+        // 查询指定目的地之下浏览数前三的攻略
+        QueryWrapper<Strategy> wrapper = new QueryWrapper<Strategy>()
+                .eq("dest_id", destId)
+                .orderByDesc("viewnum")
+                .last("limit 3");
+        return list(wrapper);
     }
 
 
