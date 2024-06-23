@@ -1,7 +1,6 @@
 package com.pzhu.article.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.pzhu.article.controller.StrategyController;
 import com.pzhu.article.domain.*;
 import com.pzhu.article.mapper.StrategyContentMapper;
 import com.pzhu.article.mapper.StrategyMapper;
@@ -69,6 +68,28 @@ public class StrategyServiceImpl extends ServiceImpl<StrategyMapper, Strategy> i
     public boolean updateById(Strategy entity) {
         return doSaveOrUpdate(entity);
     }
+
+
+    /**
+     * 攻略分类分组
+     * @param destId
+     * @return
+     */
+    @Override
+    public List<StrategyCatalog> findGroupByDestId(Long destId) {
+        return getBaseMapper().selectGroupByDestId(destId);
+    }
+
+    /**
+     * 攻略内容
+     * @param id
+     * @return
+     */
+    @Override
+    public StrategyContent getContentById(Long id) {
+        return strategyContentMapper.selectById(id);
+    }
+
 
     /**
      * 保存或者更新操作

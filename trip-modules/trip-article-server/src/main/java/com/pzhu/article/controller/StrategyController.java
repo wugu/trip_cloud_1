@@ -4,46 +4,50 @@ package com.pzhu.article.controller;
 import com.alibaba.fastjson2.JSONObject;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.pzhu.article.domain.Strategy;
+import com.pzhu.article.domain.StrategyCatalog;
+import com.pzhu.article.domain.StrategyContent;
 import com.pzhu.article.service.StrategyService;
 import com.pzhu.article.utils.OssUtil;
 import com.pzhu.core.utils.R;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/straregies")
 public class StrategyController {
 
+    private final StrategyService strategyService;
 
-    private final StrategyService StrategyService;
-
-    public StrategyController(StrategyService StrategyService) {
-        this.StrategyService = StrategyService;
+    public StrategyController(StrategyService strategyService) {
+        this.strategyService = strategyService;
     }
 
     @GetMapping("query")
     public R<Page<Strategy>> pageList(Page<Strategy> page){
-        return R.success(StrategyService.page(page));
+        return R.success(strategyService.page(page));
     }
 
     @GetMapping("/detail")
     public R<Strategy> getById(Long id){
-        return R.success(StrategyService.getById(id));
+        return R.success(strategyService.getById(id));
     }
 
     @PostMapping("/save")   
     public R<?> save(Strategy Strategy){
-        return R.success(StrategyService.save(Strategy));
+        return R.success(strategyService.save(Strategy));
     }
 
     @PostMapping("/update")
     public R<?> updateById(Strategy Strategy){
-        return R.success(StrategyService.updateById(Strategy));
+        return R.success(strategyService.updateById(Strategy));
     }
 
     @PostMapping("/delete/{id}")
     public R<?> deleteById(@PathVariable Long id){
-        return R.success(StrategyService.removeById(id));
+        return R.success(strategyService.removeById(id));
     }
 
     /**
@@ -75,4 +79,21 @@ public class StrategyController {
     }
 
 
+    /**
+     * 攻略分类分组
+     */
+    @GetMapping("/groups")
+    public R<List<StrategyCatalog>> groupByCatalog(Long destId){
+        return R.success(strategyService.findGroupByDestId(destId));
+    }
+
+    /**
+     * 攻略内容
+     * @param id
+     * @return
+     */
+    @GetMapping("/content")
+    public R<StrategyContent> getContentById(Long id){
+        return R.success(strategyService.getContentById(id));
+    }
 }

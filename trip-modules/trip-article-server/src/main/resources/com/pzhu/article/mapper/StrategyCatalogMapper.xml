@@ -4,7 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.pzhu.article.mapper.StrategyCatalogMapper">
 
-    <resultMap id="BaseResultMapper" type="com.pzhu.article.domain.StrategyCatalog">
+    <resultMap id="BaseResultMap" type="com.pzhu.article.domain.StrategyCatalog">
         <id column="id" property="id"/>
         <result column="name" property="name"/>
         <result column="dest_id" property="destId"/>
@@ -16,7 +16,7 @@
     <resultMap id="CatalogGroupMap" type="com.pzhu.article.vo.StrategyCatalogGroup">
         <id property="destId" column="dest_id"/>
         <result property="destName" column="dest_name"/>
-        <collection property="catalogList" columnPrefix="sc_" ofType="com.pzhu.article.domain.StrategyCatalog" resultMap="BaseResultMapper"/>
+        <collection property="catalogList" columnPrefix="sc_" ofType="com.pzhu.article.domain.StrategyCatalog" resultMap="BaseResultMap"/>
     </resultMap>
 
     <select id="selectGroupList" resultType="com.pzhu.article.vo.StrategyCatalogGroup">

@@ -75,4 +75,6 @@ public class DestinationController {
     public R<List<Destination>> hotList(Long rid){
         return R.success(destinationService.findDestsByRid(rid));
     }
+
+
 }
