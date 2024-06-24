@@ -9,12 +9,15 @@ import com.pzhu.article.domain.StrategyContent;
 import com.pzhu.article.qo.StrategyQuery;
 import com.pzhu.article.service.StrategyService;
 import com.pzhu.article.utils.OssUtil;
+import com.pzhu.article.vo.StrategyCondition;
 import com.pzhu.core.utils.R;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/straregies")
@@ -106,5 +109,24 @@ public class StrategyController {
     @GetMapping("/viewnumTop3")
     public R<List<Strategy>> viewnumTop3(Long destId){
         return R.success(strategyService.findViewnumTop3ByDestId(destId));
+    }
+
+    /**
+     * 攻略条件查询
+     * @return
+     */
+    @GetMapping("/conditions")
+    public R<Map<String, List<StrategyCondition>>> getConditions(){
+        Map<String, List<StrategyCondition>> map = new HashMap<>();
+        // 查询国内
+        List<StrategyCondition> chinaCondition = strategyService.findDestCondition(Strategy.ABROAD_NO); // 国内
+        map.put("chinaCondition", chinaCondition);
+        // 查询国外
+        List<StrategyCondition> abroadCondition = strategyService.findDestCondition(Strategy.ABROAD_YES);
+        map.put("abroadCondition", abroadCondition);
+        // 查询主题条件
+        List<StrategyCondition> themeCondition = strategyService.findThemeCondition();
+        map.put("themeCondition", themeCondition);
+        return null;
     }
 }

@@ -29,6 +29,19 @@
              ) t
                  JOIN strategy s oN t.catalog_id = s.catalog_id
     </select>
+    <select id="selectDestCondition" resultType="com.pzhu.article.vo.StrategyCondition">
+        select dest_id refid, dest_name name, count(*) total
+        from strategy
+        where isabroad = #{abroad}
+        group by dest_id, dest_name
+        order by total desc
+    </select>
+    <select id="selectThemeCondition" resultType="com.pzhu.article.vo.StrategyCondition">
+        select theme_id refid, theme_name name, count(*) total
+        from strategy
+        group by theme_id, theme_name
+        order by total desc
+    </select>
 
 
 </mapper>

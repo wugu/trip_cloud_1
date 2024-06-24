@@ -12,6 +12,7 @@ import com.pzhu.article.service.StrategyCatalogService;
 import com.pzhu.article.service.StrategyService;
 import com.pzhu.article.service.StrategyThemeService;
 import com.pzhu.article.utils.OssUtil;
+import com.pzhu.article.vo.StrategyCondition;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -119,6 +120,25 @@ public class StrategyServiceImpl extends ServiceImpl<StrategyMapper, Strategy> i
                 .eq(qo.getDestId() != null, "dest_id", qo.getDestId())
                 .eq(qo.getThemeId() != null, "theme_id", qo.getThemeId());
         return super.page(new Page<>(qo.getCurrent(), qo.getSize()), wrapper);
+    }
+
+    /**
+     * 根据是否在国内进行攻略查询
+     * @param abroad
+     * @return
+     */
+    @Override
+    public List<StrategyCondition> findDestCondition(int abroad) {
+        return getBaseMapper().selectDestCondition(abroad);
+    }
+
+    /**
+     * 根据攻略主题进行查询
+     * @return
+     */
+    @Override
+    public List<StrategyCondition> findThemeCondition() {
+        return getBaseMapper().selectThemeCondition();
     }
 
 
