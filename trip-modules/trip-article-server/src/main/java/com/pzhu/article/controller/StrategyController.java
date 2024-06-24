@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.pzhu.article.domain.Strategy;
 import com.pzhu.article.domain.StrategyCatalog;
 import com.pzhu.article.domain.StrategyContent;
+import com.pzhu.article.qo.StrategyQuery;
 import com.pzhu.article.service.StrategyService;
 import com.pzhu.article.utils.OssUtil;
 import com.pzhu.core.utils.R;
@@ -26,8 +27,8 @@ public class StrategyController {
     }
 
     @GetMapping("query")
-    public R<Page<Strategy>> pageList(Page<Strategy> page){
-        return R.success(strategyService.page(page));
+    public R<Page<Strategy>> pageList(StrategyQuery qo){
+        return R.success(strategyService.pageList(qo));
     }
 
     @GetMapping("/detail")

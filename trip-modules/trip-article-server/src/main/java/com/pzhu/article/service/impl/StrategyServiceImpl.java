@@ -1,10 +1,12 @@
 package com.pzhu.article.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.pzhu.article.domain.*;
 import com.pzhu.article.mapper.StrategyContentMapper;
 import com.pzhu.article.mapper.StrategyMapper;
+import com.pzhu.article.qo.StrategyQuery;
 import com.pzhu.article.service.DestinationService;
 import com.pzhu.article.service.StrategyCatalogService;
 import com.pzhu.article.service.StrategyService;
@@ -104,6 +106,19 @@ public class StrategyServiceImpl extends ServiceImpl<StrategyMapper, Strategy> i
                 .orderByDesc("viewnum")
                 .last("limit 3");
         return list(wrapper);
+    }
+
+    /**
+     * 按照目的地查询攻略
+     * @param qo
+     * @return
+     */
+    @Override
+    public Page<Strategy> pageList(StrategyQuery qo) {
+        QueryWrapper<Strategy> wrapper = new QueryWrapper<Strategy>()
+                .eq(qo.getDestId() != null, "dest_id", qo.getDestId())
+                .eq(qo.getThemeId() != null, "theme_id", qo.getThemeId());
+        return super.page(new Page<>(qo.getCurrent(), qo.getSize()), wrapper);
     }
 
 
