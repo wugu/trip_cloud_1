@@ -9,6 +9,13 @@ import lombok.Setter;
 public class StrategyQuery extends QueryObject {
 
     private Long themeId;
+
     private Long destId;
+
+    private Long refid;
+
+    private Integer type;
+
+    private String orderBy;
 
 }

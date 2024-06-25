@@ -16,4 +16,6 @@ public class StrategyCondition implements Serializable {
     private String name;
 
     private Long total;
+
+
 }

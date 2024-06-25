@@ -116,9 +116,21 @@ public class StrategyServiceImpl extends ServiceImpl<StrategyMapper, Strategy> i
      */
     @Override
     public Page<Strategy> pageList(StrategyQuery qo) {
+
+        if ((qo.getType() != null && qo.getType() != -1) && (qo.getRefid() != null && qo.getRefid() != -1)){
+            if (qo.getType() == 3){
+                // 如果当前类型 == 3 就按照主题查询
+                qo.setThemeId(qo.getRefid());
+            }else {
+                // 否则按照目的地查询
+                qo.setDestId(qo.getRefid());
+            }
+        }
+
         QueryWrapper<Strategy> wrapper = new QueryWrapper<Strategy>()
                 .eq(qo.getDestId() != null, "dest_id", qo.getDestId())
-                .eq(qo.getThemeId() != null, "theme_id", qo.getThemeId());
+                .eq(qo.getThemeId() != null, "theme_id", qo.getThemeId())
+                .orderByDesc(!StringUtils.isEmpty(qo.getOrderBy()), qo.getOrderBy());
         return super.page(new Page<>(qo.getCurrent(), qo.getSize()), wrapper);
     }
 
