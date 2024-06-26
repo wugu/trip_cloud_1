@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.pzhu.data.mapper.StrategyRankMapper">
+
+    <resultMap id="BaseResultMap" type="com.pzhu.article.domain.StrategyRank">
+        <id column="id" property="id"/>
+        <result column="dest_id" property="destId"/>
+        <result column="dest_name" property="destName"/>
+        <result column="strategy_id" property="strategyId"/>
+        <result column="strategy_title" property="strategyTitle"/>
+        <result column="statis_time" property="statisTime"/>
+        <result column="statisnum" property="statisnum"/>
+        <result column="type" property="type"/>
+    </resultMap>
+    <insert id="batchInsert">
+        insert into strategy_rank(dest_id, dest_name, strategy_id, strategy_title, statis_time, statisnum, type)
+        values
+        <foreach collection="list" item="item" separator=",">
+            (#{item.destId}, #{item.destName}, #{item.strategyId}, #{item.strategyTitle}, #{item.statisTime},
+            #{item.statisnum}, #{item.type})
+        </foreach>
+    </insert>
+
+
+</mapper>
