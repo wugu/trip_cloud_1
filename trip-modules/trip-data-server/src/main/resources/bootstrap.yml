@@ -13,3 +13,6 @@ spring:
   profiles:
     # 使用哪种环境
     active: dev  #环境标识
+logging:
+  level:
+    com.pzhu.data.mapper: debug
