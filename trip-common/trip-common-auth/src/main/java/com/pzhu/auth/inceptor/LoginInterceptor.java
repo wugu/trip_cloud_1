@@ -19,6 +19,7 @@ import java.util.concurrent.TimeUnit;
 
 @Slf4j
 public class LoginInterceptor implements HandlerInterceptor {
+
     private final RedisCache redisCache;
     private final JwtProperties jwtProperties;
 
@@ -80,7 +81,6 @@ public class LoginInterceptor implements HandlerInterceptor {
                 redisCache.setCacheObject(userLoginKey, loginUser, expireTime, TimeUnit.MINUTES);
             }
         }catch (Exception e){
-
             throw new BusinessException("用户未认证");
         }
         //其他情况返回true

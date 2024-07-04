@@ -22,6 +22,12 @@
             <groupId>com.pzhu</groupId>
             <artifactId>trip-common-auth</artifactId>
             <version>1.0.0</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.pzhu</groupId>
+                    <artifactId>trip-users-api</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
         <!--nacos注册中心-->

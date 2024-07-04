@@ -17,7 +17,6 @@ public class WebConfig implements WebMvcConfigurer {
     public WebConfig(LoginInterceptor loginInterceptor) {
         this.loginInterceptor = loginInterceptor;
     }
-
     //拦截器配置
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
