@@ -6,7 +6,10 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.pzhu.article.domain.Strategy;
 import com.pzhu.article.domain.StrategyCatalog;
 import com.pzhu.article.domain.StrategyContent;
+import com.pzhu.article.domain.StrategyRank;
+import com.pzhu.article.mapper.StrategyRankMapper;
 import com.pzhu.article.qo.StrategyQuery;
+import com.pzhu.article.service.StrategyRankService;
 import com.pzhu.article.service.StrategyService;
 import com.pzhu.article.utils.OssUtil;
 import com.pzhu.article.vo.StrategyCondition;
@@ -24,9 +27,11 @@ import java.util.Map;
 public class StrategyController {
 
     private final StrategyService strategyService;
+    private final StrategyRankService strategyRankService;
 
-    public StrategyController(StrategyService strategyService) {
+    public StrategyController(StrategyService strategyService, StrategyRankService strategyRankService) {
         this.strategyService = strategyService;
+        this.strategyRankService = strategyRankService;
     }
 
     @GetMapping("query")
@@ -128,5 +133,20 @@ public class StrategyController {
         List<StrategyCondition> themeCondition = strategyService.findThemeCondition();
         map.put("themeCondition", themeCondition);
         return null;
+    }
+    /**
+     * 攻略排行列表
+     */
+    @GetMapping("/ranks")
+    public R<JSONObject> findRanks(){
+        List<StrategyRank> abroadRank = strategyRankService.selectLastRanksByType(StrategyRank.TYPE_ABROAD);
+        List<StrategyRank> chinaRank = strategyRankService.selectLastRanksByType(StrategyRank.TYPE_CHINA);
+        List<StrategyRank> hotRank = strategyRankService.selectLastRanksByType(StrategyRank.TYPE_HOT);
+
+        JSONObject result = new JSONObject();
+        result.put("abroadRank", abroadRank);
+        result.put("chinaRank", chinaRank);
+        result.put("hotRank", hotRank);
+        return R.success(result);
     }
 }
