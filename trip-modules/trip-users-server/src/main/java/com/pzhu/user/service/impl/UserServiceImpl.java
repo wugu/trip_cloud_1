@@ -7,6 +7,7 @@ import com.pzhu.core.exception.BusinessException;
 import com.pzhu.core.utils.Md5Utils;
 import com.pzhu.core.utils.R;
 import com.pzhu.redis.utils.RedisCache;
+import com.pzhu.user.dto.UserInfoDTO;
 import com.pzhu.user.mapper.UserInfoMapper;
 import com.pzhu.user.redis.key.UserRedisKeyPrefix;
 import com.pzhu.user.service.UserInfoService;
@@ -117,6 +118,17 @@ public class UserServiceImpl extends ServiceImpl<UserInfoMapper, UserInfo> imple
         payload.put("token", jwtToken);
         payload.put("user", loginUser);
         return payload;
+    }
+
+    @Override
+    public UserInfoDTO getDtoById(Long id) {
+        UserInfo userInfo = super.getById(id);
+        if (userInfo != null){
+            UserInfoDTO dto = new UserInfoDTO();
+            BeanUtils.copyProperties(userInfo, dto);
+            return dto;
+        }
+        return null;
     }
 
     /**

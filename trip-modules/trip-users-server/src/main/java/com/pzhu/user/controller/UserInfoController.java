@@ -2,6 +2,7 @@ package com.pzhu.user.controller;
 
 import com.pzhu.core.utils.R;
 import com.pzhu.user.domain.UserInfo;
+import com.pzhu.user.dto.UserInfoDTO;
 import com.pzhu.user.service.UserInfoService;
 import com.pzhu.user.vo.RegisterRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,6 +50,14 @@ public class UserInfoController {
         return R.success();
     }
 
-
+    /**
+     * 得到 dto 对象，提供接口
+     * @param id
+     * @return
+     */
+    @GetMapping("/getById")
+    public R<UserInfoDTO> getById(Long id){
+        return R.success(userInfoService.getDtoById(id));
+    }
 
 }

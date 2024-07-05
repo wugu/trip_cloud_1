@@ -2,6 +2,7 @@ package com.pzhu.user.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.pzhu.user.domain.UserInfo;
+import com.pzhu.user.dto.UserInfoDTO;
 import com.pzhu.user.vo.RegisterRequest;
 
 import java.util.Map;
@@ -28,4 +29,12 @@ public interface UserInfoService extends IService<UserInfo> {
      * @return {Token, 用户}
      */
     Map<String, Object> login(String username, String password);
+
+    /**
+     * 获取用户对象 dto
+     * @param id
+     * @return
+     */
+    UserInfoDTO getDtoById(Long id);
+
 }

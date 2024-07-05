@@ -1,20 +1,33 @@
 package com.pzhu.article.service.impl;
 
+import com.alibaba.fastjson2.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.pzhu.article.domain.*;
+import com.pzhu.article.feign.UserInfoFeignService;
 import com.pzhu.article.mapper.TravelMapper;
 import com.pzhu.article.qo.TravelQuery;
 import com.pzhu.article.service.*;
 import com.pzhu.article.vo.TravelRange;
+import com.pzhu.core.utils.R;
+import com.pzhu.user.dto.UserInfoDTO;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 
-
+@Slf4j
 @Service
 public class TravelServiceImpl extends ServiceImpl<TravelMapper, Travel> implements TravelService {
+
+    private final UserInfoFeignService userInfoFeignService;
+
+    public TravelServiceImpl(UserInfoFeignService userInfoFeignService) {
+        this.userInfoFeignService = userInfoFeignService;
+    }
 
     @Override
     public Page<Travel> pageList(TravelQuery query) {
@@ -38,9 +51,18 @@ public class TravelServiceImpl extends ServiceImpl<TravelMapper, Travel> impleme
 
         // 排序
         wrapper.orderByDesc(query.getOrderBy());
+        Page<Travel> page = super.page(new Page<>(query.getCurrent(), query.getSize()), wrapper);
+        List<Travel> records = page.getRecords(); // 得到分页查询的记录条数
+        for (Travel travel : records) {
+            // 查找游记作者
+            R<UserInfoDTO> result = userInfoFeignService.getById(travel.getAuthorId());
+            if (result.getCode() != R.CODE_SUCCESS){
+                log.warn("[游记服务] 查询用户作者失败，返回数据：{}", JSON.toJSONString(result));
+                continue;
+            }
 
-        return super.page(
-                new Page<>(query.getCurrent(), query.getSize()), wrapper
-        );
+            travel.setAuthor(result.getData());
+        }
+        return page;
     }
 }
