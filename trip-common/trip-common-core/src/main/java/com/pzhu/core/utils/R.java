@@ -1,6 +1,7 @@
 package com.pzhu.core.utils;
 
 
+import com.pzhu.core.exception.BusinessException;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -55,5 +56,12 @@ public class R<T>{
     }
     public static <T> R<T> noPermission(){
         return new R<>(403,"非法访问",null);
+    }
+
+    public T getAndCheck(){
+        if (this.code != CODE_SUCCESS){
+            throw new BusinessException(code,msg);
+        }
+        return data;
     }
 }
