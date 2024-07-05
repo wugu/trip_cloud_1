@@ -8,6 +8,8 @@ import com.pzhu.article.service.TravelService;
 import com.pzhu.core.utils.R;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+
 @RestController
 @RequestMapping("/travels")
 public class TravelController {
@@ -20,7 +22,7 @@ public class TravelController {
     }
 
     @GetMapping("/query")
-    public R<Page<Travel>> pageList(TravelQuery query){
+    public R<Page<Travel>> pageList(TravelQuery query, HttpServletRequest req){
         return R.success(travelService.pageList(query));
     }
 

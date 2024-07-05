@@ -1,4 +1,4 @@
-package com.pzhu.article.utils;
+package com.pzhu.auth.util;
 
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
  * Spring工具类,获取Spring上下文对象等
  *
  */
-@Component
+//@Component
 public class SpringContextUtil implements ApplicationContextAware {
 
     private static ApplicationContext applicationContext = null;

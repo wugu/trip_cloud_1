@@ -12,8 +12,10 @@ import com.pzhu.article.mapper.TravelMapper;
 import com.pzhu.article.qo.TravelQuery;
 import com.pzhu.article.service.*;
 import com.pzhu.article.vo.TravelRange;
+import com.pzhu.auth.util.AuthenticationUtils;
 import com.pzhu.core.utils.R;
 import com.pzhu.user.dto.UserInfoDTO;
+import com.pzhu.user.vo.LoginUser;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -64,6 +66,24 @@ public class TravelServiceImpl extends ServiceImpl<TravelMapper, Travel> impleme
 
         // 排序
         wrapper.orderByDesc(query.getOrderBy());
+
+
+        LoginUser user = AuthenticationUtils.getUser();
+        if (user == null){
+            // 游客：只能看公开且已发布的游记
+            wrapper.eq("ispublic", Travel.ISPUBLIC_YES)
+                    .eq("state", Travel.STATE_RELEASE); // 已发布
+        }else {
+            // 用户：可以查看公开已发布和自己所有的游记
+            wrapper.and(w ->{
+               w.eq("author_id", user.getId())
+                       .or(ww->{
+                           ww.eq("ispublic", Travel.ISPUBLIC_YES)
+                                   .eq("state", Travel.STATE_RELEASE);
+                       });
+            });
+
+        }
         Page<Travel> page = super.page(new Page<>(query.getCurrent(), query.getSize()), wrapper);
         List<Travel> records = page.getRecords(); // 得到分页查询的记录条数
 
