@@ -3,6 +3,7 @@ package com.pzhu.article.controller;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.pzhu.article.domain.Travel;
+import com.pzhu.article.qo.TravelQuery;
 import com.pzhu.article.service.TravelService;
 import com.pzhu.core.utils.R;
 import org.springframework.web.bind.annotation.*;
@@ -18,9 +19,9 @@ public class TravelController {
         this.travelService = travelService;
     }
 
-    @GetMapping
-    public R<Page<Travel>> pageList(Page<Travel> page){
-        return R.success(travelService.page(page));
+    @GetMapping("/query")
+    public R<Page<Travel>> pageList(TravelQuery query){
+        return R.success(travelService.pageList(query));
     }
 
     @GetMapping("/detail")

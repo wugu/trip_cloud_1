@@ -20,8 +20,6 @@ import java.util.regex.Pattern;
 /**
  * 阿里云OSS工具类
  *
- * @author lianhuinan
- * @since 2022/4/12 16:30
  */
 public class OssUtil {
     /**
