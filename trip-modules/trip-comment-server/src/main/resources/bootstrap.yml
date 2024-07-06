@@ -1,0 +1,44 @@
+spring:
+  application:
+    name: comment-service
+  cloud:
+    nacos:
+      server-addr: 127.0.0.1:8848 #nacos中心地址
+      config:
+        file-extension: yaml  # 配置文件格式
+        namespace: d4bc3b60-54d1-486f-a1ca-f7c7957b57fe
+        #告诉配置中心需要从远程额外拉取哪些配置文件
+        shared-configs:
+          - dataId: redis-dev-yaml
+          - dataId: jwt-dev-yaml
+            #refresh: true
+  # 配置文件的环境
+  profiles:
+    # 使用哪种环境
+    active: dev  #环境标识
+
+logging:
+  level:
+    org.springframework.data.mongodb.core: DEBUG
+aliyun:
+#  accessKey:
+#    id:
+#    secret:
+  oss:
+    bucket-name: test-oss-xy
+    endpoint: oss-cn-chengdu.aliyuncs.com
+    domain: https://test-oss-xy.oss-cn-chengdu.aliyuncs.com
+
+
+# nacos config  远程找配置文件时的规则
+# 1.应用程序名称.后缀 =》 trip-gateway.yaml
+# 2.应用程序名称-环境.后缀=》trip-gateway-dev.yaml
+# 3.应用程序名称》trip-gateway
+
+
+# 远程
+server:
+  port: 8040
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/trip-comment
