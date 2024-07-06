@@ -6,6 +6,7 @@ import lombok.ToString;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -16,7 +17,7 @@ import java.util.List;
 @Getter
 @Document("strategy_comment")
 @ToString
-public class StrategyComment {
+public class StrategyComment implements Serializable {
 
     @Id // 自己设置主键
     private String id;
