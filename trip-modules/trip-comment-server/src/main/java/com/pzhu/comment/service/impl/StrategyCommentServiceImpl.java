@@ -1,10 +1,12 @@
 package com.pzhu.comment.service.impl;
 
+import com.pzhu.auth.util.AuthenticationUtils;
 import com.pzhu.comment.domain.StrategyComment;
 import com.pzhu.comment.qo.CommentQuery;
 import com.pzhu.comment.repository.StrategyCommentRepository;
 import com.pzhu.comment.service.StrategyCommentService;
 import com.pzhu.core.qo.QueryObject;
+import com.pzhu.user.vo.LoginUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -15,6 +17,7 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -59,5 +62,25 @@ public class StrategyCommentServiceImpl implements StrategyCommentService {
         List<StrategyComment> list = mongoTemplate.find(query, StrategyComment.class);
 
         return new PageImpl<>(list, request, total);
+    }
+
+    /**
+     * 发布评论
+     * @param comment
+     */
+    @Override
+    public void save(StrategyComment comment) {
+        // 获取当前登录的用户
+        LoginUser user = AuthenticationUtils.getUser();
+        comment.setUserId(user.getId());
+        comment.setNickname(user.getNickname());
+        comment.setCity(user.getCity());
+        comment.setLevel(user.getLevel());
+        comment.setHeadImgUrl(user.getHeadImgUrl());
+        comment.setCreateTime(new Date());
+        // 可以使用 copy
+
+        // 保存到mongodb
+        strategyCommentRepository.save(comment);
     }
 }

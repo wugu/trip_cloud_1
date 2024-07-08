@@ -7,4 +7,6 @@ import org.springframework.data.domain.Page;
 public interface StrategyCommentService {
 
     Page<StrategyComment> page(CommentQuery qo);
+
+    void save(StrategyComment comment);
 }
