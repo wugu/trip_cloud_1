@@ -26,6 +26,8 @@ public class StrategyCommentController {
     @PostMapping("/save")
     public R<?> save(StrategyComment comment){ // 尽量不要用对象整个，可能会暴露表结构
         strategyCommentService.save(comment);
+        // 评论数+1
+        strategyCommentService.replyNumIncr(comment.getStrategyId());
         return R.success();
     }
 

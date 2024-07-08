@@ -3,11 +3,11 @@ package com.pzhu.comment.service.impl;
 import com.pzhu.auth.util.AuthenticationUtils;
 import com.pzhu.comment.domain.StrategyComment;
 import com.pzhu.comment.qo.CommentQuery;
+import com.pzhu.comment.redis.key.CommentRedisKeyPrefix;
 import com.pzhu.comment.repository.StrategyCommentRepository;
 import com.pzhu.comment.service.StrategyCommentService;
-import com.pzhu.core.qo.QueryObject;
+import com.pzhu.redis.utils.RedisCache;
 import com.pzhu.user.vo.LoginUser;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
@@ -26,10 +26,12 @@ public class StrategyCommentServiceImpl implements StrategyCommentService {
 
     private final StrategyCommentRepository strategyCommentRepository;
     private final MongoTemplate mongoTemplate;
+    private final RedisCache redisCache;
 
-    public StrategyCommentServiceImpl(StrategyCommentRepository strategyCommentRepository, MongoTemplate mongoTemplate) {
+    public StrategyCommentServiceImpl(StrategyCommentRepository strategyCommentRepository, MongoTemplate mongoTemplate, RedisCache redisCache) {
         this.strategyCommentRepository = strategyCommentRepository;
         this.mongoTemplate = mongoTemplate;
+        this.redisCache = redisCache;
     }
 
 
@@ -113,7 +115,14 @@ public class StrategyCommentServiceImpl implements StrategyCommentService {
         }
     }
 
-
+    /**
+     * 评论数+1
+     * @param strategyId
+     */
+    @Override
+    public void replyNumIncr(Long strategyId) {
+        redisCache.hashIncrement(CommentRedisKeyPrefix.STRATEGIES_STAT_DATA_MAP, "replynum", 1, strategyId+"");
+    }
 
 
 }
