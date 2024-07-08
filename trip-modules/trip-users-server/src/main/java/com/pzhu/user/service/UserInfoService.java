@@ -5,6 +5,7 @@ import com.pzhu.user.domain.UserInfo;
 import com.pzhu.user.dto.UserInfoDTO;
 import com.pzhu.user.vo.RegisterRequest;
 
+import java.util.List;
 import java.util.Map;
 
 public interface UserInfoService extends IService<UserInfo> {
@@ -37,4 +38,5 @@ public interface UserInfoService extends IService<UserInfo> {
      */
     UserInfoDTO getDtoById(Long id);
 
+    List<Long> getFavorStrategyIdList(Long userId);
 }

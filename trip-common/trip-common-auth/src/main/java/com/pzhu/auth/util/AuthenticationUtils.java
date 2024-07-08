@@ -60,7 +60,7 @@ abstract public class AuthenticationUtils {
             USER_HOLDER.set(user);
             return user;
         } catch (Exception e) {
-            log.warn("[认证工具] 获取用户信息失败", e);
+            log.warn("[认证工具] 获取用户信息失败:{}", e.getMessage());
         }
         return null;
     }

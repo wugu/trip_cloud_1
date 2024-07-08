@@ -6,10 +6,7 @@ import com.pzhu.user.dto.UserInfoDTO;
 import com.pzhu.user.service.UserInfoService;
 import com.pzhu.user.vo.RegisterRequest;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
@@ -58,6 +55,17 @@ public class UserInfoController {
     @GetMapping("/getById")
     public R<UserInfoDTO> getById(Long id){
         return R.success(userInfoService.getDtoById(id));
+    }
+
+    /**
+     * 查询用户收藏文章 id 集合
+     * @param userId
+     * @return
+     */
+    @GetMapping("/favor/strategies")
+    public R<List<Long>> getFavorStrategyIdList(Long userId){
+        List<Long> list = userInfoService.getFavorStrategyIdList(userId);
+        return R.success(list);
     }
 
 }

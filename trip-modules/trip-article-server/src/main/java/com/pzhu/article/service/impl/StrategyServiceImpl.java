@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.pzhu.article.domain.*;
+import com.pzhu.article.feign.UserInfoFeignService;
 import com.pzhu.article.mapper.StrategyContentMapper;
 import com.pzhu.article.mapper.StrategyMapper;
 import com.pzhu.article.qo.StrategyQuery;
@@ -14,7 +15,10 @@ import com.pzhu.article.service.StrategyService;
 import com.pzhu.article.service.StrategyThemeService;
 import com.pzhu.article.utils.OssUtil;
 import com.pzhu.article.vo.StrategyCondition;
+import com.pzhu.auth.util.AuthenticationUtils;
+import com.pzhu.core.utils.R;
 import com.pzhu.redis.utils.RedisCache;
+import com.pzhu.user.vo.LoginUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -33,13 +37,15 @@ public class StrategyServiceImpl extends ServiceImpl<StrategyMapper, Strategy> i
     private final DestinationService destinationService;
     private final StrategyContentMapper strategyContentMapper;
     private final RedisCache redisCache;
+    private final UserInfoFeignService userInfoFeignService;
 
-    public StrategyServiceImpl(DestinationService destinationService, StrategyCatalogService strategyCatalogService, StrategyThemeService strategyThemeService, StrategyContentMapper strategyContentMapper, RedisCache redisCache) {
+    public StrategyServiceImpl(DestinationService destinationService, StrategyCatalogService strategyCatalogService, StrategyThemeService strategyThemeService, StrategyContentMapper strategyContentMapper, RedisCache redisCache, UserInfoFeignService userInfoFeignService) {
         this.destinationService = destinationService;
         this.strategyCatalogService = strategyCatalogService;
         this.strategyThemeService = strategyThemeService;
         this.strategyContentMapper = strategyContentMapper;
         this.redisCache = redisCache;
+        this.userInfoFeignService = userInfoFeignService;
     }
 
     /**
@@ -52,6 +58,14 @@ public class StrategyServiceImpl extends ServiceImpl<StrategyMapper, Strategy> i
         Strategy strategy = super.getById(id);
         StrategyContent content = strategyContentMapper.selectById(id);
         strategy.setContent(content);
+        // 查询当前用户是否已收藏
+        LoginUser user = AuthenticationUtils.getUser();
+        if (user != null){
+            // 通过远程调用得到用户收藏文章 id 集合
+            R<List<Long>> favoriteStrategyIdList = userInfoFeignService.getFavorStrategyIdList(user.getId());
+            List<Long> list = favoriteStrategyIdList.getAndCheck();
+            strategy.setFavorite(list.contains(id));
+        }
         return strategy;
     }
 
