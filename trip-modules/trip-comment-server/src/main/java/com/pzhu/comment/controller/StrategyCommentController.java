@@ -31,7 +31,6 @@ public class StrategyCommentController {
 
     @GetMapping("/query")
     public R<Page<StrategyComment>> query(CommentQuery qo){
-
         return R.success(strategyCommentService.page(qo));
     }
 
