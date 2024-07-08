@@ -7,4 +7,6 @@ import org.springframework.data.domain.Page;
 public interface TravelCommentService {
 
     Page<TravelComment> page(CommentQuery qo);
+
+    void save(TravelComment comment);
 }

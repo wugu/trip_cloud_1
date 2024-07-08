@@ -5,7 +5,6 @@ import com.pzhu.comment.domain.StrategyComment;
 import com.pzhu.comment.qo.CommentQuery;
 import com.pzhu.comment.service.StrategyCommentService;
 import com.pzhu.core.utils.R;
-import lombok.Getter;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
