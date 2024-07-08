@@ -6,13 +6,17 @@ import com.pzhu.redis.utils.RedisCache;
 import com.pzhu.user.redis.key.UserRedisKeyPrefix;
 import com.pzhu.user.vo.LoginUser;
 import io.jsonwebtoken.*;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.StringUtils;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 
+@Slf4j
 abstract public class AuthenticationUtils {
+
+    private static final ThreadLocal<LoginUser> USER_HOLDER = new ThreadLocal<>();
 
     public static HttpServletRequest getRequest() {
         // 只要是在 Spring MVC 环境中运行，就不可能为空
@@ -28,6 +32,11 @@ abstract public class AuthenticationUtils {
     }
 
     public static LoginUser getUser(){
+        LoginUser cacheUser = USER_HOLDER.get();
+        if (cacheUser != null){
+            return cacheUser; // 缓存到 jvm 中
+        }
+
         String token = getToken();
         if (StringUtils.isEmpty(token)){
             return null;
@@ -46,10 +55,18 @@ abstract public class AuthenticationUtils {
 
             //从redis中获取数据，拿到说明没有过期，拿不到说明已经过期
             String userLoginKey = UserRedisKeyPrefix.USER_LOGIN_INFO_STRING.fullKey(uuid);
-            return redisCache.getCacheObject(userLoginKey); // 返回用户对象
+            LoginUser user = redisCache.getCacheObject(userLoginKey);// 返回用户对象
+            // 将第一次查询用户信息保存起来
+            USER_HOLDER.set(user);
+            return user;
         } catch (Exception e) {
-            e.printStackTrace();
+            log.warn("[认证工具] 获取用户信息失败", e);
         }
         return null;
+    }
+
+    // 在登录拦截器中执行线程结束，清除缓存（jvm 中的 user
+    public static void removeUser() {
+        USER_HOLDER.remove();
     }
 }

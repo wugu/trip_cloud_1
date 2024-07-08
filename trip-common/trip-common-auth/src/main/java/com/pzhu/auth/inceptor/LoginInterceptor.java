@@ -2,6 +2,7 @@ package com.pzhu.auth.inceptor;
 
 import com.pzhu.auth.anno.RequireLogin;
 import com.pzhu.auth.config.JwtProperties;
+import com.pzhu.auth.util.AuthenticationUtils;
 import com.pzhu.core.exception.BusinessException;
 import com.pzhu.redis.utils.RedisCache;
 import com.pzhu.user.redis.key.UserRedisKeyPrefix;
@@ -12,6 +13,7 @@ import io.jsonwebtoken.Jwts;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.HandlerInterceptor;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -85,5 +87,19 @@ public class LoginInterceptor implements HandlerInterceptor {
         }
         //其他情况返回true
         return true;
+    }
+
+    @Override
+    public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
+        // 请求执行完成以后准备相应之前执行
+
+    }
+
+    @Override
+    public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {
+        // 请求执行完成以后准备相应之前执行
+        // 线程即将完成本次请求，先将当前线程空间内存储的数据清除掉
+        AuthenticationUtils.removeUser();
+
     }
 }
