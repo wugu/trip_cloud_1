@@ -41,6 +41,8 @@ public class StrategyController {
 
     @GetMapping("/detail")
     public R<Strategy> getById(Long id){
+        // 阅读数+1
+        strategyService.viewnumTncr(id);
         return R.success(strategyService.getById(id));
     }
 

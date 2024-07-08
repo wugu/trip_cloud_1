@@ -25,4 +25,6 @@ public interface StrategyService extends IService<Strategy> {
     List<StrategyCondition> findDestCondition(int abroad);
 
     List<StrategyCondition> findThemeCondition();
+
+    void viewnumTncr(Long id);
 }

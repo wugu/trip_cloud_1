@@ -7,12 +7,14 @@ import com.pzhu.article.domain.*;
 import com.pzhu.article.mapper.StrategyContentMapper;
 import com.pzhu.article.mapper.StrategyMapper;
 import com.pzhu.article.qo.StrategyQuery;
+import com.pzhu.article.redis.key.StrategyRedisKeyPrefix;
 import com.pzhu.article.service.DestinationService;
 import com.pzhu.article.service.StrategyCatalogService;
 import com.pzhu.article.service.StrategyService;
 import com.pzhu.article.service.StrategyThemeService;
 import com.pzhu.article.utils.OssUtil;
 import com.pzhu.article.vo.StrategyCondition;
+import com.pzhu.redis.utils.RedisCache;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,12 +32,14 @@ public class StrategyServiceImpl extends ServiceImpl<StrategyMapper, Strategy> i
     private final StrategyCatalogService strategyCatalogService;
     private final DestinationService destinationService;
     private final StrategyContentMapper strategyContentMapper;
+    private final RedisCache redisCache;
 
-    public StrategyServiceImpl(DestinationService destinationService, StrategyCatalogService strategyCatalogService, StrategyThemeService strategyThemeService, StrategyContentMapper strategyContentMapper) {
+    public StrategyServiceImpl(DestinationService destinationService, StrategyCatalogService strategyCatalogService, StrategyThemeService strategyThemeService, StrategyContentMapper strategyContentMapper, RedisCache redisCache) {
         this.destinationService = destinationService;
         this.strategyCatalogService = strategyCatalogService;
         this.strategyThemeService = strategyThemeService;
         this.strategyContentMapper = strategyContentMapper;
+        this.redisCache = redisCache;
     }
 
     /**
@@ -151,6 +155,15 @@ public class StrategyServiceImpl extends ServiceImpl<StrategyMapper, Strategy> i
     @Override
     public List<StrategyCondition> findThemeCondition() {
         return getBaseMapper().selectThemeCondition();
+    }
+
+    /**
+     * 阅读数+1
+     * @param id
+     */
+    @Override
+    public void viewnumTncr(Long id) {
+        redisCache.hashIncrement(StrategyRedisKeyPrefix.STRATEGIES_STAT_DATA_MAP, "viewnum",1, id+"");
     }
 
 
