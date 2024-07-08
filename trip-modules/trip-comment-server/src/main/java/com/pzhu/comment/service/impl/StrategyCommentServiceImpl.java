@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class StrategyCommentServiceImpl implements StrategyCommentService {
@@ -82,6 +83,34 @@ public class StrategyCommentServiceImpl implements StrategyCommentService {
 
         // 保存到mongodb
         strategyCommentRepository.save(comment);
+    }
+
+    /**
+     * 点赞
+     * @param cid
+     */
+    @Override
+    public void doLike(String cid) {
+        // 基于 cid 查询评论对象
+        Optional<StrategyComment> optional = strategyCommentRepository.findById(cid);
+        if (optional.isPresent()){ // 判断 optional 是否为 null
+            StrategyComment strategyComment = optional.get();
+            // 获取当前登录的用户对象
+            LoginUser user = AuthenticationUtils.getUser();
+            // 判断当前用户是否已经点过赞
+            if (strategyComment.getThumbuplist().contains(user.getId())) {
+                // 如果点过赞，点赞数-1，将用户 id 从集合中删除
+                strategyComment.setThumbupnum(strategyComment.getThumbupnum() - 1);
+                strategyComment.getThumbuplist().remove(user.getId());
+            }else {
+                // 如果没点赞，点赞书+1，将用户 id 添加到集合中
+                strategyComment.setThumbupnum(strategyComment.getThumbupnum() + 1);
+                strategyComment.getThumbuplist().add(user.getId());
+            }
+
+            // 重新将对象保存到 mongodb
+            strategyCommentRepository.save(strategyComment);
+        }
     }
 
 

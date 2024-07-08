@@ -35,4 +35,11 @@ public class StrategyCommentController {
 
         return R.success(strategyCommentService.page(qo));
     }
+
+    @RequireLogin
+    @PostMapping("/likes")
+    public R<?> likes(String cid){ // 评论 id
+        strategyCommentService.doLike(cid);
+        return R.success();
+    }
 }

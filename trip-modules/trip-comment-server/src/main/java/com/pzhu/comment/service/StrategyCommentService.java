@@ -9,4 +9,6 @@ public interface StrategyCommentService {
     Page<StrategyComment> page(CommentQuery qo);
 
     void save(StrategyComment comment);
+
+    void doLike(String cid);
 }
