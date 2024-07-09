@@ -35,6 +35,10 @@ public interface KeyPrefix {//redis中key的前缀
      * @return
      */
     default String fullKey(String... suffix){
+        if (suffix == null){
+            return getPrefix();
+        }
+
         StringBuilder sb = new StringBuilder(100);
         sb.append(getPrefix());
         for (String s : suffix) {

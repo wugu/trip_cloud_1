@@ -7,8 +7,9 @@ spring:
       config:
         file-extension: yaml  # 配置文件格式
         namespace: d4bc3b60-54d1-486f-a1ca-f7c7957b57fe
-
             #refresh: true
+        shared-configs:
+          - data-id: redis-dev.yaml
   # 配置文件的环境
   profiles:
     # 使用哪种环境

@@ -194,7 +194,9 @@ public class StrategyServiceImpl extends ServiceImpl<StrategyMapper, Strategy> i
      */
     @Override
     public void viewnumTncr(Long id) {
-        redisCache.hashIncrement(StrategyRedisKeyPrefix.STRATEGIES_STAT_DATA_MAP, "viewnum",1, id+"");
+        this.statDataIncr("viewnum", id);
+        // 记录操作次数
+        redisCache.zsetIncrement(StrategyRedisKeyPrefix.STRATEGIES_STAT_COUNT_RANK_ZSET, 1, id);// 前缀，分数，成员
     }
 
     /**
@@ -219,11 +221,17 @@ public class StrategyServiceImpl extends ServiceImpl<StrategyMapper, Strategy> i
         // 从当前时间开始，到今天的最后一秒
         keyPrefix.setTimeout(DateUtils.getLastMillisSeconds());
         keyPrefix.setUnit(TimeUnit.SECONDS);
-        redisCache.hashIncrement(
+        Long ret = redisCache.hashIncrement(
                 keyPrefix, user.getId() + "", 1, sid + ""
-        );  // 用户 +1
+        );// 用户 +1
+        if (ret > 0){
+            // 说明之前已经存在过值
+            return false;
+        }
         // 文章置顶数+1
-        redisCache.hashIncrement(StrategyRedisKeyPrefix.STRATEGIES_STAT_DATA_MAP, "thumbnum",1, sid+"");
+        this.statDataIncr("thumbnum", sid);
+        // 记录操作次数
+        redisCache.zsetIncrement(StrategyRedisKeyPrefix.STRATEGIES_STAT_COUNT_RANK_ZSET, 1, sid);// 前缀，分数，成员
         return true;
     }
 
@@ -237,6 +245,13 @@ public class StrategyServiceImpl extends ServiceImpl<StrategyMapper, Strategy> i
         return redisCache.getCacheMap(StrategyRedisKeyPrefix.STRATEGIES_STAT_DATA_MAP.fullKey(id + ""));
     }
 
+
+    private void statDataIncr(String hashKey, Long sid){
+        redisCache.hashIncrement(StrategyRedisKeyPrefix.STRATEGIES_STAT_DATA_MAP, hashKey,1, sid+"");
+        // 记录操作次数
+        redisCache.zsetIncrement(StrategyRedisKeyPrefix.STRATEGIES_STAT_COUNT_RANK_ZSET, 1, sid);// 前缀，分数，成员
+
+    }
 
     /**
      * 保存或者更新操作
