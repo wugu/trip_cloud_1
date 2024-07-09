@@ -1,10 +1,12 @@
 package com.pzhu.user.controller;
 
+import com.pzhu.auth.anno.RequireLogin;
 import com.pzhu.core.utils.R;
 import com.pzhu.user.domain.UserInfo;
 import com.pzhu.user.dto.UserInfoDTO;
 import com.pzhu.user.service.UserInfoService;
 import com.pzhu.user.vo.RegisterRequest;
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -66,6 +68,13 @@ public class UserInfoController {
     public R<List<Long>> getFavorStrategyIdList(Long userId){
         List<Long> list = userInfoService.getFavorStrategyIdList(userId);
         return R.success(list);
+    }
+
+    @RequireLogin
+    @PostMapping("/favor/strategies")
+    public R<Boolean> favoriteStrategy(Long sid){
+        boolean ret = userInfoService.favoriteStrategy(sid);
+        return R.success();
     }
 
 }

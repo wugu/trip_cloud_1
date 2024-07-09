@@ -3,6 +3,7 @@ package com.pzhu.user.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.pzhu.auth.config.JwtProperties;
+import com.pzhu.auth.util.AuthenticationUtils;
 import com.pzhu.core.exception.BusinessException;
 import com.pzhu.core.utils.Md5Utils;
 import com.pzhu.core.utils.R;
@@ -141,6 +142,26 @@ public class UserServiceImpl extends ServiceImpl<UserInfoMapper, UserInfo> imple
     public List<Long> getFavorStrategyIdList(Long userId) {
         List<Long> list = getBaseMapper().selectFavorStrategyIdList(userId);
         return list;
+    }
+
+    @Override
+    public boolean favoriteStrategy(Long sid) {
+        // 获取当前登录用户
+        LoginUser user = AuthenticationUtils.getUser();
+        // 获取当前用户收藏的文章列表
+        List<Long> list = this.getFavorStrategyIdList(user.getId());
+        // 判断当前用户是否已经收藏过该文章
+        if (list.contains(sid)){
+            // 收藏过，取消收藏，数量-1
+            getBaseMapper().deleteFavoriteStrategy(user.getId(), sid);
+            redisCache.hashIncrement(UserRedisKeyPrefix.STRATEGIES_STAT_DATA_MAP, "favornum", -1, sid+"");
+            return false;
+        }
+
+        // 没收藏，收藏，数量+1
+        getBaseMapper().insertFavoriteStrategy(user.getId(), sid);
+        redisCache.hashIncrement(UserRedisKeyPrefix.STRATEGIES_STAT_DATA_MAP, "favornum", 1, sid+"");
+        return true;
     }
 
     /**

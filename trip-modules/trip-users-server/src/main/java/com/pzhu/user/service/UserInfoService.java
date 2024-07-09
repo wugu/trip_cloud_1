@@ -39,4 +39,7 @@ public interface UserInfoService extends IService<UserInfo> {
     UserInfoDTO getDtoById(Long id);
 
     List<Long> getFavorStrategyIdList(Long userId);
+
+    boolean favoriteStrategy(Long sid);
+
 }

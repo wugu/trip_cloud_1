@@ -6,6 +6,9 @@ import java.util.concurrent.TimeUnit;
 
 public class UserRedisKeyPrefix extends BaseKeyPrefix {
 
+    public static final UserRedisKeyPrefix STRATEGIES_STAT_DATA_MAP =
+            new UserRedisKeyPrefix("STRATEGIES:STAT:DATA"); // 攻略 key 的前缀
+
     public static final UserRedisKeyPrefix USER_REGISTER_VERIFY_CODE_STRING =
             new UserRedisKeyPrefix("USER:REGISTER_VERIFY_CODE_STRING",30,TimeUnit.MINUTES);
 

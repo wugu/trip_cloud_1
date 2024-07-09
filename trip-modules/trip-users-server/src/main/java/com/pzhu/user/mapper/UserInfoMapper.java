@@ -9,4 +9,7 @@ public interface UserInfoMapper extends BaseMapper<UserInfo> {
 
     List<Long> selectFavorStrategyIdList(Long userId);
 
+    void deleteFavoriteStrategy(Long userId, Long sid);
+
+    void insertFavoriteStrategy(Long userId, Long sid);
 }
