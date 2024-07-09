@@ -24,6 +24,7 @@ import com.pzhu.user.vo.LoginUser;
 import org.apache.ibatis.transaction.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.data.redis.RedisProperties;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
@@ -44,7 +45,8 @@ public class StrategyServiceImpl extends ServiceImpl<StrategyMapper, Strategy> i
     private final RedisCache redisCache;
     private final UserInfoFeignService userInfoFeignService;
 
-    public StrategyServiceImpl(DestinationService destinationService, StrategyCatalogService strategyCatalogService, StrategyThemeService strategyThemeService, StrategyContentMapper strategyContentMapper, RedisCache redisCache, UserInfoFeignService userInfoFeignService) {
+    public StrategyServiceImpl(DestinationService destinationService, StrategyCatalogService strategyCatalogService, StrategyThemeService strategyThemeService, StrategyContentMapper strategyContentMapper, RedisCache redisCache,
+                               @Lazy UserInfoFeignService userInfoFeignService) {
         this.destinationService = destinationService;
         this.strategyCatalogService = strategyCatalogService;
         this.strategyThemeService = strategyThemeService;
@@ -211,7 +213,7 @@ public class StrategyServiceImpl extends ServiceImpl<StrategyMapper, Strategy> i
                 keyPrefix, user.getId() + "", 1, sid + ""
         );  // 用户 +1
         // 文章置顶数+1
-        redisCache.hashIncrement(StrategyRedisKeyPrefix.STRATEGIES_STAT_DATA_MAP, "thumbsnum",1, sid+"");
+        redisCache.hashIncrement(StrategyRedisKeyPrefix.STRATEGIES_STAT_DATA_MAP, "thumbnum",1, sid+"");
         return true;
     }
 
