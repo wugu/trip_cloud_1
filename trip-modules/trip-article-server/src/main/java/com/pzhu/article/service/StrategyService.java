@@ -9,6 +9,7 @@ import com.pzhu.article.qo.StrategyQuery;
 import com.pzhu.article.vo.StrategyCondition;
 
 import java.util.List;
+import java.util.Map;
 
 
 public interface StrategyService extends IService<Strategy> {
@@ -29,4 +30,7 @@ public interface StrategyService extends IService<Strategy> {
     void viewnumTncr(Long id);
 
     boolean thumbnumIncr(Long sid);
+
+    Map<String, Object> getStatData(Long id);
+
 }

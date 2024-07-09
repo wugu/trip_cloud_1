@@ -32,6 +32,7 @@ import org.springframework.util.StringUtils;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
@@ -72,6 +73,15 @@ public class StrategyServiceImpl extends ServiceImpl<StrategyMapper, Strategy> i
             R<List<Long>> favoriteStrategyIdList = userInfoFeignService.getFavorStrategyIdList(user.getId());
             List<Long> list = favoriteStrategyIdList.getAndCheck();
             strategy.setFavorite(list.contains(id));
+        }
+        // 从 redis 中查询最新的统计数据
+        Map<String, Object> statData = redisCache.getCacheMap(StrategyRedisKeyPrefix.STRATEGIES_STAT_DATA_MAP.fullKey(id + ""));
+        if (statData != null){
+            strategy.setViewnum((Integer) statData.get("viewnum"));
+            strategy.setReplynum((Integer) statData.get("replynum"));
+            strategy.setFavornum((Integer) statData.get("favornum"));
+            strategy.setSharenum((Integer) statData.get("sharenum"));
+            strategy.setThumbsupnum((Integer) statData.get("thumbsupnum"));
         }
         return strategy;
     }
@@ -215,6 +225,16 @@ public class StrategyServiceImpl extends ServiceImpl<StrategyMapper, Strategy> i
         // 文章置顶数+1
         redisCache.hashIncrement(StrategyRedisKeyPrefix.STRATEGIES_STAT_DATA_MAP, "thumbnum",1, sid+"");
         return true;
+    }
+
+    /**
+     * 数据回显
+     * @param id
+     * @return
+     */
+    @Override
+    public Map<String, Object> getStatData(Long id) {
+        return redisCache.getCacheMap(StrategyRedisKeyPrefix.STRATEGIES_STAT_DATA_MAP.fullKey(id + ""));
     }
 
 

@@ -145,6 +145,12 @@ public class StrategyController {
         return R.success(ret);
     }
 
+    @GetMapping("/stat/data")
+    public R<Map<String,Object>> getStatData(Long id){
+        Map<String,Object> ret = strategyService.getStatData(id);
+        return R.success(ret);
+    }
+
     /**
      * 攻略排行列表
      */
