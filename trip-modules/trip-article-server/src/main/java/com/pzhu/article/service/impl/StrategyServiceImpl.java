@@ -16,10 +16,14 @@ import com.pzhu.article.service.StrategyThemeService;
 import com.pzhu.article.utils.OssUtil;
 import com.pzhu.article.vo.StrategyCondition;
 import com.pzhu.auth.util.AuthenticationUtils;
+import com.pzhu.core.exception.BusinessException;
+import com.pzhu.core.utils.DateUtils;
 import com.pzhu.core.utils.R;
 import com.pzhu.redis.utils.RedisCache;
 import com.pzhu.user.vo.LoginUser;
+import org.apache.ibatis.transaction.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.data.redis.RedisProperties;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
@@ -28,6 +32,7 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
 
 @Service
@@ -178,6 +183,36 @@ public class StrategyServiceImpl extends ServiceImpl<StrategyMapper, Strategy> i
     @Override
     public void viewnumTncr(Long id) {
         redisCache.hashIncrement(StrategyRedisKeyPrefix.STRATEGIES_STAT_DATA_MAP, "viewnum",1, id+"");
+    }
+
+    /**
+     * 置顶数
+     * @param sid
+     * @return
+     */
+    @Override
+    public boolean thumbnumIncr(Long sid) {
+        LoginUser user = AuthenticationUtils.getUser();
+        // 查询 redis 的记录，判断是否已经置顶过，如果有直接抛出异常
+        StrategyRedisKeyPrefix keyPrefix = StrategyRedisKeyPrefix.STRATEGIES_TOP_MAP;
+        String fullKey = keyPrefix.fullKey(sid+""); // 外部的 key
+        // TODO 如果此时一个用户非常快速的访问了多次当前接口，在此处会不会被拦截
+        // 使用Redis事务来保证操作的原子性
+
+        Integer count = redisCache.getCacheMapValue(fullKey, user.getId() + "");
+        if (count != null && count > 0){
+            return false;
+        }
+        // 否则先记录当前用户已经针对该文章置顶，并设置过期时间为今天最后一秒
+        // 从当前时间开始，到今天的最后一秒
+        keyPrefix.setTimeout(DateUtils.getLastMillisSeconds());
+        keyPrefix.setUnit(TimeUnit.SECONDS);
+        redisCache.hashIncrement(
+                keyPrefix, user.getId() + "", 1, sid + ""
+        );  // 用户 +1
+        // 文章置顶数+1
+        redisCache.hashIncrement(StrategyRedisKeyPrefix.STRATEGIES_STAT_DATA_MAP, "thumbsnum",1, sid+"");
+        return true;
     }
 
 

@@ -27,4 +27,6 @@ public interface StrategyService extends IService<Strategy> {
     List<StrategyCondition> findThemeCondition();
 
     void viewnumTncr(Long id);
+
+    boolean thumbnumIncr(Long sid);
 }

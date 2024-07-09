@@ -13,6 +13,7 @@ import com.pzhu.article.service.StrategyRankService;
 import com.pzhu.article.service.StrategyService;
 import com.pzhu.article.utils.OssUtil;
 import com.pzhu.article.vo.StrategyCondition;
+import com.pzhu.auth.anno.RequireLogin;
 import com.pzhu.core.utils.R;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -136,6 +137,14 @@ public class StrategyController {
         map.put("themeCondition", themeCondition);
         return null;
     }
+
+    @RequireLogin
+    @GetMapping("/thumbnumIncr")
+    public R<Boolean> thumbnumIncr(Long sid){
+        boolean ret = strategyService.thumbnumIncr(sid);
+        return R.success(ret);
+    }
+
     /**
      * 攻略排行列表
      */

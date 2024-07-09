@@ -10,14 +10,14 @@ import java.util.concurrent.TimeUnit;
 public class BaseKeyPrefix implements KeyPrefix{
 
     private String prefix;
-    private Integer timeout;
+    private Long timeout;
     private TimeUnit unit;
 
     public BaseKeyPrefix(String prefix){
-        this(prefix,-1,null);
+        this(prefix,-1L,null);
     }
 
-    public BaseKeyPrefix(String prefix,Integer timeout,TimeUnit unit){
+    public BaseKeyPrefix(String prefix,Long timeout,TimeUnit unit){
         this.prefix = prefix;
         this.timeout = timeout;
         this.unit = unit;
@@ -30,7 +30,7 @@ public class BaseKeyPrefix implements KeyPrefix{
 
     @Override
     public Long getTimeout() {
-        return Long.valueOf(timeout);
+        return timeout;
     }
 
     @Override

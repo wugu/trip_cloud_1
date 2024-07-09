@@ -1,6 +1,7 @@
 package com.pzhu.redis.utils;
 
 import com.pzhu.redis.key.KeyPrefix;
+import org.springframework.boot.autoconfigure.data.redis.RedisProperties;
 import org.springframework.data.redis.core.BoundSetOperations;
 import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -266,7 +267,7 @@ public class RedisCache {
      */
     public Long hashIncrement(KeyPrefix prefix, String hashKey, int increment, String... suffix) {
         Long ret = redisTemplate.opsForHash().increment(prefix.fullKey(suffix), hashKey, increment);
-        if (prefix.getTimeout() != null && prefix.getTimeout() > 0 && ret == 1) {
+        if (prefix.getTimeout() != null && prefix.getTimeout() > 0 && ret == 1) { // ret == 1 指的是第一次
             // 只有有设置过期时间 && 每一个用户第一次访问页面时才会+1
             expire(prefix.fullKey(suffix), prefix.getTimeout(), prefix.getUnit());
         }
@@ -313,4 +314,5 @@ public class RedisCache {
     public Boolean setnx(String key, String value) {
         return redisTemplate.opsForValue().setIfAbsent(key, value);
     }
+
 }
