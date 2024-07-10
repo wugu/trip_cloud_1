@@ -18,6 +18,7 @@
         <module>trip-article-server</module>
         <module>trip-data-server</module>
         <module>trip-comment-server</module>
+        <module>trip-search-server</module>
     </modules>
 
     <dependencies>

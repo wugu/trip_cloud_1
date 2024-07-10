@@ -3,29 +3,25 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <artifactId>trip_cloud</artifactId>
+        <artifactId>trip-modules</artifactId>
         <groupId>com.pzhu</groupId>
         <version>1.0.0</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>trip-modules-api</artifactId>
-    <packaging>pom</packaging>
+    <artifactId>trip-search-server</artifactId>
 
-    <description>所有微服务子模块api的父模块，管理所有api模块所需的依赖</description>
-    <modules>
-        <module>trip-users-api</module>
-        <module>trip-article-api</module>
-        <module>trip-comment-api</module>
-        <module>trip-seearch-api</module>
-    </modules>
+    <properties>
+        <maven.compiler.source>8</maven.compiler.source>
+        <maven.compiler.target>8</maven.compiler.target>
+    </properties>
 
     <dependencies>
         <dependency>
             <groupId>com.pzhu</groupId>
-            <artifactId>trip-common-core</artifactId>
+            <artifactId>trip-seearch-api</artifactId>
+            <version>1.0.0</version>
         </dependency>
     </dependencies>
-
 
 </project>
