@@ -22,6 +22,10 @@
             <artifactId>trip-seearch-api</artifactId>
             <version>1.0.0</version>
         </dependency>
+        <dependency>
+            <groupId>com.pzhu</groupId>
+            <artifactId>trip-common-core</artifactId>
+        </dependency>
     </dependencies>
 
 </project>
